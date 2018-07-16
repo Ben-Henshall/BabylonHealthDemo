@@ -8,6 +8,12 @@ extension Scene {
       var vc = PostsVC()
       vc.bindViewModel(to: viewModel)
       return vc
+      
+    case .postsEmbedded(let viewModel):
+      var vc = PostsVC()
+      vc.bindViewModel(to: viewModel)
+      let navController = UINavigationController(rootViewController: vc)
+      return navController
     }
   }
 }

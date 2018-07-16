@@ -23,6 +23,6 @@ struct PostsVM {
   
   public func modal() {
     let newViewModel = PostsVM(navigationHandler: navigationHandler)
-    navigationHandler.transition(to: .posts(newViewModel), type: .modal, animated: true)
+    navigationHandler.transition(to: .postsEmbedded(newViewModel), type: .modal, animated: true)
   }
 }

@@ -11,13 +11,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let viewController = PostsVC()
     viewController.view.backgroundColor = .red
-    window?.rootViewController = viewController
+    let navigationController = UINavigationController(rootViewController: viewController)
+    window?.rootViewController = navigationController
     
     let sceneCoordinator = SceneCoordinator(window: window!)
     
     let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
     
-    sceneCoordinator.transition(to: .posts(startingViewModel), type: .root, animated: false)
+    sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
     
     return true
   }

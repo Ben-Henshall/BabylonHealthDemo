@@ -25,13 +25,15 @@ class SceneCoordinator: NavigationHandler {
           fatalError("Can't push a view controller without a current navigation controller")
         }
         currentViewController = newVC.actualViewController
-        navigationController.pushViewController(newVC, animated: animated)
+        navigationController.pushViewController(currentViewController, animated: animated)
       
       case .modal:
+        currentViewController.navigationController?.present(newVC, animated: animated, completion: nil)
         currentViewController = newVC.actualViewController
-        currentViewController.present(newVC, animated: animated, completion: nil)
     }
   }
+  
+  // TODO: Fix back navigation causing navigation controllers to get out of sync
   
   func pop(animated: Bool) {
     // Check if VC is being presented modal
