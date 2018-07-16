@@ -2,13 +2,19 @@ import UIKit
 import RealmSwift
 import CocoaLumberjackSwift
 
-class PostsVC: UIViewController {
+class PostsVC: UIViewController, BindableType {
+  
+  var viewModel: PostsVM!
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     let testModel = TestModel()
     DDLogInfo(testModel.test)
+  }
+  
+  func bindViewModel() {
+    // TODO: Bindings
   }
 }
 
