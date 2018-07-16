@@ -23,6 +23,10 @@
 		13970EC720FCFF8300C748DC /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EC520FCFF8300C748DC /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		13970EC920FCFF8300C748DC /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EC820FCFF8300C748DC /* RealmSwift.framework */; };
 		13970ECA20FCFF8300C748DC /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EC820FCFF8300C748DC /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		13970ECC20FD011F00C748DC /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970ECB20FD011F00C748DC /* CocoaLumberjack.framework */; };
+		13970ECD20FD011F00C748DC /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970ECB20FD011F00C748DC /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		13970ECF20FD011F00C748DC /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970ECE20FD011F00C748DC /* CocoaLumberjackSwift.framework */; };
+		13970ED020FD011F00C748DC /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970ECE20FD011F00C748DC /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +50,8 @@
 				13970ECA20FCFF8300C748DC /* RealmSwift.framework in Embed Frameworks */,
 				13970EB920FCFBC600C748DC /* RxCocoa.framework in Embed Frameworks */,
 				13970EC420FCFE0D00C748DC /* RxRealm.framework in Embed Frameworks */,
+				13970ED020FD011F00C748DC /* CocoaLumberjackSwift.framework in Embed Frameworks */,
+				13970ECD20FD011F00C748DC /* CocoaLumberjack.framework in Embed Frameworks */,
 				13970EB620FCFBC600C748DC /* RxSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -69,6 +75,8 @@
 		13970EC220FCFE0D00C748DC /* RxRealm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRealm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13970EC520FCFF8300C748DC /* Realm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Realm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13970EC820FCFF8300C748DC /* RealmSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13970ECB20FD011F00C748DC /* CocoaLumberjack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13970ECE20FD011F00C748DC /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CocoaLumberjackSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +88,8 @@
 				13970EC920FCFF8300C748DC /* RealmSwift.framework in Frameworks */,
 				13970EB820FCFBC600C748DC /* RxCocoa.framework in Frameworks */,
 				13970EC320FCFE0D00C748DC /* RxRealm.framework in Frameworks */,
+				13970ECF20FD011F00C748DC /* CocoaLumberjackSwift.framework in Frameworks */,
+				13970ECC20FD011F00C748DC /* CocoaLumberjack.framework in Frameworks */,
 				13970EB520FCFBC600C748DC /* RxSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,6 +115,8 @@
 				13970EC220FCFE0D00C748DC /* RxRealm.framework */,
 				13970EC820FCFF8300C748DC /* RealmSwift.framework */,
 				13970EC520FCFF8300C748DC /* Realm.framework */,
+				13970ECE20FD011F00C748DC /* CocoaLumberjackSwift.framework */,
+				13970ECB20FD011F00C748DC /* CocoaLumberjack.framework */,
 			);
 			sourceTree = "<group>";
 		};

@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import CocoaLumberjackSwift
 
 class ViewController: UIViewController {
 
@@ -15,15 +16,8 @@ class ViewController: UIViewController {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     let testModel = TestModel()
-    print(testModel.test)
+    DDLogInfo(testModel.test)
   }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-
-
 }
 
 class TestModel: Object {
