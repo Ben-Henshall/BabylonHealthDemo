@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
+    let testModel = TestModel()
+    print(testModel.test)
   }
 
   override func didReceiveMemoryWarning() {
@@ -23,3 +26,13 @@ class ViewController: UIViewController {
 
 }
 
+class TestModel: Object {
+  // MARK: - Properties
+  @objc dynamic var id: Int = 0
+  @objc dynamic var test = "test text"
+  
+  // MARK: - Meta
+  override static func primaryKey() -> String? {
+    return "id"
+  }
+}

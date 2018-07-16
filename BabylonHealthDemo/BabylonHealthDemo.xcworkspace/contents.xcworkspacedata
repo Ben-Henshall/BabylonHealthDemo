@@ -4,4 +4,13 @@
    <FileRef
       location = "group:BabylonHealthDemo.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../Carthage/Checkouts/RxRealm/RxRealm.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Carthage/Checkouts/RxSwift/Rx.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Carthage/Checkouts/realm-cocoa/Realm.xcodeproj">
+   </FileRef>
 </Workspace>
