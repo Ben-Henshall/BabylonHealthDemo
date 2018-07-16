@@ -7,5 +7,5 @@ protocol NavigationHandler {
   func transition(to scene: Scene, type: SceneTransitionType, animated: Bool)
 
   /// Pops the most recent scene off of the navigation stack
-  func pop()
+  func pop(animated: Bool)
 }

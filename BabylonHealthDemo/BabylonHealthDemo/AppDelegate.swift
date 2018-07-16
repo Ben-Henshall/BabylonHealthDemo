@@ -13,6 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     viewController.view.backgroundColor = .red
     window?.rootViewController = viewController
     
+    let sceneCoordinator = SceneCoordinator(window: window!)
+    
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
+    
+    sceneCoordinator.transition(to: .posts(startingViewModel), type: .root, animated: false)
+    
     return true
   }
 

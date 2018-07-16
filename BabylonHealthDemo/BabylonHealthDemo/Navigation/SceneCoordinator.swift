@@ -12,7 +12,6 @@ class SceneCoordinator: NavigationHandler {
   }
   
   func transition(to scene: Scene, type: SceneTransitionType, animated: Bool) {
-    // TODO: Fix navigation
     let newVC = scene.viewController()
     
     switch type {
@@ -34,7 +33,21 @@ class SceneCoordinator: NavigationHandler {
     }
   }
   
-  func pop() {
-    // TODO: Pop
+  func pop(animated: Bool) {
+    // Check if VC is being presented modal
+    if let presentingVC = currentViewController.presentingViewController, currentViewController.isModal() {
+      // dismiss the modal controller
+      currentViewController.dismiss(animated: animated) {
+        self.currentViewController = presentingVC.actualViewController
+      }
+    } else if let navigationController = currentViewController.navigationController {
+      
+      guard navigationController.popViewController(animated: animated) != nil else {
+        fatalError("Can't navigate back from \(currentViewController)")
+      }
+      currentViewController = navigationController.viewControllers.last!.actualViewController
+    } else {
+      fatalError("Not a modal, no navigation controller: can't navigate back from \(currentViewController)")
+    }
   }
 }
