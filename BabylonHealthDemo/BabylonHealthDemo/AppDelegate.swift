@@ -8,20 +8,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
-    
-    let viewController = UIViewController()
-    let navigationController = UINavigationController(rootViewController: viewController)
-    window?.rootViewController = navigationController
-    
-    let sceneCoordinator = SceneCoordinator(window: window!)
-    navigationController.delegate = sceneCoordinator
-    
-    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
-    sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
+    startApp()
     
     return true
   }
 
+  private func startApp() {
+    let sceneCoordinator = SceneCoordinator(window: window!)
+    
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
+    let viewController = PostsVC(viewModel: startingViewModel)
+    let navigationController = UINavigationController(rootViewController: viewController)
+    navigationController.delegate = sceneCoordinator
+
+    sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
+  }
+  
   private func setup() {
     setupLogging()
     setupWindow()
