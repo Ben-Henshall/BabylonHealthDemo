@@ -11,7 +11,6 @@
 		1324ECDD20FCF5F000D251E6 /* PostsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1324ECDC20FCF5F000D251E6 /* PostsVC.swift */; };
 		1324ECE220FCF5F200D251E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1324ECE120FCF5F200D251E6 /* Assets.xcassets */; };
 		1324ECE520FCF5F200D251E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1324ECE320FCF5F200D251E6 /* LaunchScreen.storyboard */; };
-		1324ECF020FCF5F200D251E6 /* BabylonHealthDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1324ECEF20FCF5F200D251E6 /* BabylonHealthDemoTests.swift */; };
 		13970EB520FCFBC600C748DC /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB420FCFBC600C748DC /* RxSwift.framework */; };
 		13970EB620FCFBC600C748DC /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB420FCFBC600C748DC /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		13970EB820FCFBC600C748DC /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB720FCFBC600C748DC /* RxCocoa.framework */; };
@@ -37,6 +36,9 @@
 		13970EEF20FD2F6E00C748DC /* UIViewController+IsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EEE20FD2F6E00C748DC /* UIViewController+IsModal.swift */; };
 		13970EF120FD369700C748DC /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF020FD369700C748DC /* DetailVC.swift */; };
 		13970EF320FD36A000C748DC /* DetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF220FD36A000C748DC /* DetailVM.swift */; };
+		13EE153520FE4733008CE979 /* Scene+ViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */; };
+		13EE153820FE47D0008CE979 /* MockNavigationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */; };
+		13EE153B20FE4ADA008CE979 /* ActualViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +79,6 @@
 		1324ECE420FCF5F200D251E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1324ECE620FCF5F200D251E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1324ECEB20FCF5F200D251E6 /* BabylonHealthDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BabylonHealthDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1324ECEF20FCF5F200D251E6 /* BabylonHealthDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabylonHealthDemoTests.swift; sourceTree = "<group>"; };
 		1324ECF120FCF5F200D251E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13970EB420FCFBC600C748DC /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13970EB720FCFBC600C748DC /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +98,9 @@
 		13970EEE20FD2F6E00C748DC /* UIViewController+IsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+IsModal.swift"; sourceTree = "<group>"; };
 		13970EF020FD369700C748DC /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		13970EF220FD36A000C748DC /* DetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVM.swift; sourceTree = "<group>"; };
+		13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+ViewControllerTests.swift"; sourceTree = "<group>"; };
+		13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigationHandler.swift; sourceTree = "<group>"; };
+		13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,7 +171,9 @@
 		1324ECEE20FCF5F200D251E6 /* BabylonHealthDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				1324ECEF20FCF5F200D251E6 /* BabylonHealthDemoTests.swift */,
+				13EE153920FE4ABD008CE979 /* Extensions */,
+				13EE153620FE47C4008CE979 /* Mocks */,
+				13EE153320FE471F008CE979 /* Navigation */,
 				1324ECF120FCF5F200D251E6 /* Info.plist */,
 			);
 			path = BabylonHealthDemoTests;
@@ -209,6 +215,30 @@
 			children = (
 				13970EEC20FD2C7800C748DC /* UIViewController+actualViewController.swift */,
 				13970EEE20FD2F6E00C748DC /* UIViewController+IsModal.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		13EE153320FE471F008CE979 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		13EE153620FE47C4008CE979 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		13EE153920FE4ABD008CE979 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -352,7 +382,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1324ECF020FCF5F200D251E6 /* BabylonHealthDemoTests.swift in Sources */,
+				13EE153820FE47D0008CE979 /* MockNavigationHandler.swift in Sources */,
+				13EE153B20FE4ADA008CE979 /* ActualViewControllerTests.swift in Sources */,
+				13EE153520FE4733008CE979 /* Scene+ViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

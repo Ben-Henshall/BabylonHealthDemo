@@ -1,7 +1,7 @@
 struct PostsVM {
   var testText = "first edition"
   
-  let navigationHandler: NavigationHandler
+  private let navigationHandler: NavigationHandler
   
   init(navigationHandler: NavigationHandler) {
     self.navigationHandler = navigationHandler
