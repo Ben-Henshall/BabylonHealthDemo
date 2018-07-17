@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  BabylonHealthDemo
-//
-//  Created by Benjamin Henshall on 16/07/2018.
-//  Copyright © 2018 Benjamin Henshall. All rights reserved.
-//
-
 import UIKit
 import CocoaLumberjack
 
@@ -16,11 +8,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
+    
+    startApp()
+    
     return true
   }
 
+  private func startApp() {
+    let sceneCoordinator = SceneCoordinator(window: window!)
+    
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
+    let viewController = PostsVC(viewModel: startingViewModel)
+    let navigationController = UINavigationController(rootViewController: viewController)
+    navigationController.delegate = sceneCoordinator
+
+    sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
+  }
+  
   private func setup() {
     setupLogging()
+    setupWindow()
   }
 
   private func setupLogging() {
@@ -31,6 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
     fileLogger.logFileManager.maximumNumberOfLogFiles = 7
     DDLog.add(fileLogger)
+  }
+  
+  private func setupWindow() {
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.makeKeyAndVisible()
   }
 
 }
