@@ -17,6 +17,7 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
   func transition(to scene: Scene, type: SceneTransitionType, animated: Bool) {
     let newVC = scene.viewController()
     
+    // If we're transitioning to a new navigation stack, update the delegate
     if let newVCNav = newVC as? UINavigationController {
       newVCNav.delegate = self
     }
@@ -29,7 +30,7 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
       
       case .push:
         guard let navigationController = currentViewController.navigationController else {
-          DDLogWarn("Can't push a view controller without a current navigation controller")
+          fatalError("Can't push a view controller without a current navigation controller")
         }
         currentViewController = newVC.actualViewController
         navigationController.pushViewController(currentViewController, animated: animated)
@@ -41,24 +42,29 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
   }
   
   func pop(animated: Bool) {
-    // Check if VC is being presented modal
+    // Check if VC is being presented modally
     if let presentingVC = currentViewController.presentingViewController, currentViewController.isModal() {
-      // dismiss the modal controller
+      
       currentViewController.dismiss(animated: animated) {
         self.currentViewController = presentingVC.actualViewController
       }
+      
     } else if let navigationController = currentViewController.navigationController {
       
       guard navigationController.popViewController(animated: animated) != nil else {
         DDLogWarn("Can't navigate back from \(currentViewController)")
+        return
       }
       currentViewController = navigationController.viewControllers.last!.actualViewController
     } else {
       DDLogWarn("Not a modal, no navigation controller: can't navigate back from \(currentViewController.description)")
+      return
     }
   }
   
   func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    // Update the current ViewController if navigation stack is updated without SceneCoordinator initiating the change.
+    // e.g., navigating backwards using the system back button.
     currentViewController = viewController
   }
 }

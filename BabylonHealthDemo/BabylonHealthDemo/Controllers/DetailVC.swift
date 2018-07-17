@@ -2,7 +2,7 @@ import UIKit
 import RealmSwift
 import CocoaLumberjackSwift
 
-class DetailVC: UIViewController, BindableType {
+class DetailVC: UIViewController {
   
   var viewModel: PostsVM!
   

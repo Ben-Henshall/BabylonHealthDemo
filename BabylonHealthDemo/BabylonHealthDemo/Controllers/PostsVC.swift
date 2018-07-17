@@ -2,7 +2,7 @@ import UIKit
 import RealmSwift
 import CocoaLumberjackSwift
 
-class PostsVC: UIViewController, BindableType {
+class PostsVC: UIViewController {
   
   var viewModel: PostsVM!
 
@@ -11,19 +11,29 @@ class PostsVC: UIViewController, BindableType {
   private var pushButton: UIButton!
   private var modalButton: UIButton!
 
+  init(viewModel: PostsVM) {
+    super.init(nibName: nil, bundle: nil)
+    self.viewModel = viewModel
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func loadView() {
     super.loadView()
     setup()
-  }
-  
-  func bindViewModel() {
-    // TODO: Bindings
   }
   
   private func setup() {
     addUIElements()
     setupStyling()
     setupConstraints()
+    bindViewModel()
+  }
+  
+  func bindViewModel() {
+    // TODO: Bindings
   }
   
   private func addUIElements() {

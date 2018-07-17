@@ -2,18 +2,17 @@ import UIKit
 
 extension Scene {
   
+  /// Fetches a ViewController for the Scene. ViewController could be embedded in a NavigationController.
+  /// Also sets up Rx bindings
+  ///
+  /// - Returns: The ViewController to represent the Scene
   public func viewController() -> UIViewController {
     switch self {
     case .posts(let viewModel):
-      var vc = PostsVC()
-      vc.bindViewModel(to: viewModel)
-      return vc
+      return PostsVC(viewModel: viewModel)
       
     case .postsEmbedded(let viewModel):
-      var vc = PostsVC()
-      vc.bindViewModel(to: viewModel)
-      let navController = UINavigationController(rootViewController: vc)
-      return navController
+      return UINavigationController(rootViewController: PostsVC(viewModel: viewModel))
     }
   }
 }

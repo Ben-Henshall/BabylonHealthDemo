@@ -9,15 +9,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
     
-    let viewController = PostsVC()
-    viewController.view.backgroundColor = .red
+    let viewController = UIViewController()
     let navigationController = UINavigationController(rootViewController: viewController)
     window?.rootViewController = navigationController
     
     let sceneCoordinator = SceneCoordinator(window: window!)
     navigationController.delegate = sceneCoordinator
-    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
     
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
     sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
     
     return true
