@@ -13,7 +13,7 @@ struct PostsVM {
   
   public func root() {
     let newViewModel = PostsVM(navigationHandler: navigationHandler)
-    navigationHandler.transition(to: .posts(newViewModel), type: .root, animated: true)
+    navigationHandler.transition(to: .postsEmbedded(newViewModel), type: .root, animated: true)
   }
   
   public func push() {

@@ -1,7 +1,10 @@
 import UIKit
+import CocoaLumberjackSwift
 
 /// Concrete implementation of NavigationHandler that provides navigation functionality between Scenes
-class SceneCoordinator: NavigationHandler {
+/// Keeps references to ViewControllers to remove coupling between ViewControllers. ViewControllers are
+/// completely independent of each other.
+class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDelegate {
 
   private let window: UIWindow
   private var currentViewController: UIViewController
@@ -14,6 +17,10 @@ class SceneCoordinator: NavigationHandler {
   func transition(to scene: Scene, type: SceneTransitionType, animated: Bool) {
     let newVC = scene.viewController()
     
+    if let newVCNav = newVC as? UINavigationController {
+      newVCNav.delegate = self
+    }
+    
     switch type {
     
       case .root:
@@ -22,7 +29,7 @@ class SceneCoordinator: NavigationHandler {
       
       case .push:
         guard let navigationController = currentViewController.navigationController else {
-          fatalError("Can't push a view controller without a current navigation controller")
+          DDLogWarn("Can't push a view controller without a current navigation controller")
         }
         currentViewController = newVC.actualViewController
         navigationController.pushViewController(currentViewController, animated: animated)
@@ -32,8 +39,6 @@ class SceneCoordinator: NavigationHandler {
         currentViewController = newVC.actualViewController
     }
   }
-  
-  // TODO: Fix back navigation causing navigation controllers to get out of sync
   
   func pop(animated: Bool) {
     // Check if VC is being presented modal
@@ -45,11 +50,15 @@ class SceneCoordinator: NavigationHandler {
     } else if let navigationController = currentViewController.navigationController {
       
       guard navigationController.popViewController(animated: animated) != nil else {
-        fatalError("Can't navigate back from \(currentViewController)")
+        DDLogWarn("Can't navigate back from \(currentViewController)")
       }
       currentViewController = navigationController.viewControllers.last!.actualViewController
     } else {
-      fatalError("Not a modal, no navigation controller: can't navigate back from \(currentViewController)")
+      DDLogWarn("Not a modal, no navigation controller: can't navigate back from \(currentViewController.description)")
     }
+  }
+  
+  func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    currentViewController = viewController
   }
 }

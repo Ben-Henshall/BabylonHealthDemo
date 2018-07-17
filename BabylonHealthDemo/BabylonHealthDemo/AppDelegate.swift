@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.rootViewController = navigationController
     
     let sceneCoordinator = SceneCoordinator(window: window!)
-    
+    navigationController.delegate = sceneCoordinator
     let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
     
     sceneCoordinator.transition(to: .postsEmbedded(startingViewModel), type: .root, animated: false)
