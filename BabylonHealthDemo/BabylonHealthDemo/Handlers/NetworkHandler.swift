@@ -5,6 +5,9 @@ import RxRealm
 
 public typealias ID = Int64
 
+/// TODO: Always return Observable.changeset (Or .collection) and perform a URLSession fetch.
+/// Feed the result of this fetch into the Realm DB and that will update the return observable.
+
 protocol DataAccessor {
   var network: DataHandler { get set }
   var cached: DataHandler { get set }
@@ -82,7 +85,6 @@ class CachedDataHandler: DataHandler {
     guard let realm = realm else { DDLogError("Could not access realm instance."); return Observable.empty() }
     let posts = realm.objects(Post.self)
     return Observable.collection(from: posts).map { $0.toArray() }
-    
   }
   
   func comments(for postID: ID) {

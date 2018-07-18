@@ -37,7 +37,7 @@ class PostsVC: UIViewController {
   func bindViewModel() {
     // TODO: Bindings
     viewModel.posts.drive(postsTableView.rx.items) { tableView, index, post in
-      let cell = TitleTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: TitleCellReuseIdentifier)
+      let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
       cell.configure(model: TitleTableViewCellModel(post: post))
       return cell
     }
