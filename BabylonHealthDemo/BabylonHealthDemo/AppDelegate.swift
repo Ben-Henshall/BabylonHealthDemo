@@ -1,5 +1,5 @@
 import UIKit
-import CocoaLumberjack
+import CocoaLumberjackSwift
 import RealmSwift
 import Realm
 
@@ -12,12 +12,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     setup()
     
     //setupRealmModel()
-    
+
     startApp()
     
     return true
   }
-
+  
   private func startApp() {
     let sceneCoordinator = SceneCoordinator(window: window!)
     
@@ -115,5 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
   }
+  
+  
 
 }
