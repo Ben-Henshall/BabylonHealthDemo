@@ -10,9 +10,10 @@ protocol DataAccessor {
 protocol DataHandler {
   func users()
   
-  func user(id: ID)
+  func user(for id: ID)
   
-  func posts(between startingID: ID, and endingID: ID)
+  //func posts(between startingID: ID, and endingID: ID)
+  func posts()
   
   func comments(for postID: ID)
 }
@@ -32,12 +33,12 @@ class NetworkDataHandler: DataHandler {
     DDLogInfo("Accessed network users")
   }
   
-  func user(id: ID) {
+  func user(for id: ID) {
     DDLogInfo("Accessed network user with id \(id)")
   }
   
-  func posts(between startingID: ID, and endingID: ID) {
-    DDLogInfo("Accessed network posts between \(startingID) and \(endingID)")
+  func posts() {
+    DDLogInfo("Accessed network posts ")
   }
   
   func comments(for postID: ID) {
@@ -50,12 +51,16 @@ class CachedDataHandler: DataHandler {
     DDLogInfo("Accessed cached users")
   }
   
-  func user(id: ID) {
+  func user(for id: ID) {
     DDLogInfo("Accessed cached user with id \(id)")
   }
   
-  func posts(between startingID: ID, and endingID: ID) {
-    DDLogInfo("Accessed cached posts between \(startingID) and \(endingID)")
+//  func posts(between startingID: ID, and endingID: ID) {
+//    DDLogInfo("Accessed cached posts between \(startingID) and \(endingID)")
+//  }
+  
+  func posts() {
+    DDLogInfo("Accessed cached posts between")
   }
   
   func comments(for postID: ID) {

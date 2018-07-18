@@ -7,7 +7,8 @@ import Realm
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-
+  var dataAccessor: DataAccessor!
+  
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
     
@@ -21,15 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private func setupDataAccessor() {
     let networkDataHandler = NetworkDataHandler()
     let cachedDataHandler = CachedDataHandler()
-    let dataAccessor = DataAccessorImplementation(networkDataHandler: networkDataHandler, cachedDataHandler: cachedDataHandler)
-    
-    dataAccessor.cached.
+    dataAccessor = DataAccessorImplementation(networkDataHandler: networkDataHandler, cachedDataHandler: cachedDataHandler)
   }
   
   private func startApp() {
     let sceneCoordinator = SceneCoordinator(window: window!)
     
-    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator)
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator, dataAccessor: dataAccessor)
     let viewController = PostsVC(viewModel: startingViewModel)
     let navigationController = UINavigationController(rootViewController: viewController)
     navigationController.delegate = sceneCoordinator
