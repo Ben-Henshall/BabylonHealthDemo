@@ -1,10 +1,13 @@
 import UIKit
 import RealmSwift
 import CocoaLumberjackSwift
+import RxSwift
 
 private let TitleCellReuseIdentifier: String = "TitleCellReuseIdentifier"
 
 class PostsVC: UIViewController {
+  
+  private let disposeBag = DisposeBag()
   
   var viewModel: PostsVM!
 
@@ -33,6 +36,12 @@ class PostsVC: UIViewController {
   
   func bindViewModel() {
     // TODO: Bindings
+    viewModel.posts.drive(postsTableView.rx.items) { tableView, index, post in
+      let cell = TitleTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: TitleCellReuseIdentifier)
+      cell.configure(model: TitleTableViewCellModel(post: post))
+      return cell
+    }
+    .disposed(by: disposeBag)
   }
   
   private func addUIElements() {

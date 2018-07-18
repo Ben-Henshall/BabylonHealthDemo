@@ -21,6 +21,6 @@ class PostsVM {
   }
   
   private func setupObservables() {
-    posts = dataAccessor.cached.posts()
+    posts = dataAccessor.cached.posts().asDriver(onErrorJustReturn: [])
   }
 }

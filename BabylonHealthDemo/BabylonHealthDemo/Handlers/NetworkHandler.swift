@@ -1,4 +1,7 @@
 import CocoaLumberjackSwift
+import RealmSwift
+import RxSwift
+import RxRealm
 
 public typealias ID = Int64
 
@@ -13,7 +16,7 @@ protocol DataHandler {
   func user(for id: ID)
   
   //func posts(between startingID: ID, and endingID: ID)
-  func posts()
+  func posts() -> Observable<[Post]>
   
   func comments(for postID: ID)
 }
@@ -37,8 +40,10 @@ class NetworkDataHandler: DataHandler {
     DDLogInfo("Accessed network user with id \(id)")
   }
   
-  func posts() {
+  func posts() -> Observable<[Post]> {
+    
     DDLogInfo("Accessed network posts ")
+    return Observable.empty()
   }
   
   func comments(for postID: ID) {
@@ -47,6 +52,19 @@ class NetworkDataHandler: DataHandler {
 }
 
 class CachedDataHandler: DataHandler {
+  
+  // TODO: Figure out if this should be optional or IUO
+  // App would still function even if we could never access realm
+  // but would provide an uncertain experience
+  private let realm: Realm?
+  
+  required init() {
+    realm = try? Realm()
+    if realm == nil {
+      DDLogError("Could not access realm instance.")
+    }
+  }
+  
   func users() {
     DDLogInfo("Accessed cached users")
   }
@@ -59,8 +77,12 @@ class CachedDataHandler: DataHandler {
 //    DDLogInfo("Accessed cached posts between \(startingID) and \(endingID)")
 //  }
   
-  func posts() {
-    DDLogInfo("Accessed cached posts between")
+  // TODO: Check if this is still caching
+  func posts() -> Observable<[Post]> {
+    guard let realm = realm else { DDLogError("Could not access realm instance."); return Observable.empty() }
+    let posts = realm.objects(Post.self)
+    return Observable.collection(from: posts).map { $0.toArray() }
+    
   }
   
   func comments(for postID: ID) {
