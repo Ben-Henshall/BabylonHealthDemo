@@ -1,15 +1,17 @@
 import UIKit
 import RealmSwift
 import CocoaLumberjackSwift
+import RxSwift
+
+private let TitleCellReuseIdentifier: String = "TitleCellReuseIdentifier"
 
 class PostsVC: UIViewController {
   
+  private let disposeBag = DisposeBag()
+  
   var viewModel: PostsVM!
 
-  private var popButton: UIButton!
-  private var rootButton: UIButton!
-  private var pushButton: UIButton!
-  private var modalButton: UIButton!
+  private var postsTableView: UITableView!
 
   init(viewModel: PostsVM) {
     super.init(nibName: nil, bundle: nil)
@@ -34,80 +36,39 @@ class PostsVC: UIViewController {
   
   func bindViewModel() {
     // TODO: Bindings
+    viewModel.posts.drive(postsTableView.rx.items) { tableView, index, post in
+      let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
+      cell.configure(model: TitleTableViewCellModel(post: post))
+      return cell
+    }
+    .disposed(by: disposeBag)
   }
   
   private func addUIElements() {
-    popButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-    popButton.setTitle("pop", for: .normal)
-    popButton.addTarget(self, action: #selector(pop), for: .touchUpInside)
-    view.addSubview(popButton)
-    
-    rootButton = UIButton()
-    rootButton.setTitle("root", for: .normal)
-    rootButton.addTarget(self, action: #selector(root), for: .touchUpInside)
-    view.addSubview(rootButton)
-    
-    pushButton = UIButton()
-    pushButton.setTitle("push", for: .normal)
-    pushButton.addTarget(self, action: #selector(push), for: .touchUpInside)
-    view.addSubview(pushButton)
-    
-    modalButton = UIButton()
-    modalButton.setTitle("modal", for: .normal)
-    modalButton.addTarget(self, action: #selector(modal), for: .touchUpInside)
-    view.addSubview(modalButton)
+    postsTableView = UITableView(frame: .zero, style: .plain)
+    postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleCellReuseIdentifier)
+//    postsTableView.estimatedRowHeight = 40
+//    postsTableView.backgroundColor = .clear
+//    postsTableView.sectionIndexColor = .clear
+//    postsTableView.tintColor = .clear
+//    postsTableView.alwaysBounceVertical = false
+//    postsTableView.allowsSelection = false
+//    postsTableView.separatorStyle = .none
+//    postsTableView.contentInsetAdjustmentBehavior = .never
+//    postsTableView.contentInset = .zero
+    view.addSubview(postsTableView)
   }
   
   private func setupStyling() {
     view.backgroundColor = .white
-    popButton.backgroundColor = .red
-    rootButton.backgroundColor = .red
-    pushButton.backgroundColor = .red
-    modalButton.backgroundColor = .red
   }
   
   private func setupConstraints() {
-    popButton.translatesAutoresizingMaskIntoConstraints = false
-    popButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    popButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    
-    rootButton.translatesAutoresizingMaskIntoConstraints = false
-    rootButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    rootButton.topAnchor.constraint(equalTo: popButton.bottomAnchor, constant: 16).isActive = true
-    
-    pushButton.translatesAutoresizingMaskIntoConstraints = false
-    pushButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    pushButton.topAnchor.constraint(equalTo: rootButton.bottomAnchor, constant: 16).isActive = true
-    
-    modalButton.translatesAutoresizingMaskIntoConstraints = false
-    modalButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    modalButton.topAnchor.constraint(equalTo: pushButton.bottomAnchor, constant: 16).isActive = true
-  }
-  
-  @objc private func pop() {
-    viewModel.pop()
-  }
-  
-  @objc private func root() {
-    viewModel.root()
-  }
-  
-  @objc private func push() {
-    viewModel.push()
-  }
-  
-  @objc private func modal() {
-    viewModel.modal()
-  }
-}
+    postsTableView.translatesAutoresizingMaskIntoConstraints = false
+    postsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+    postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    postsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+    postsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
 
-class TestModel: Object {
-  // MARK: - Properties
-  @objc dynamic var id: Int = 0
-  @objc dynamic var test = "test text"
-  
-  // MARK: - Meta
-  override static func primaryKey() -> String? {
-    return "id"
   }
 }

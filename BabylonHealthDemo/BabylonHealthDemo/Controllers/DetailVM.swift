@@ -1,4 +1,4 @@
-struct DetailVM {
+class DetailVM {
   var testText = "first edition"
   
   let navigationHandler: NavigationHandler
