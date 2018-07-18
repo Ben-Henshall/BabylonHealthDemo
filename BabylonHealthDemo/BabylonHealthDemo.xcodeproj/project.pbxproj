@@ -13,6 +13,7 @@
 		1324ECE520FCF5F200D251E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1324ECE320FCF5F200D251E6 /* LaunchScreen.storyboard */; };
 		133CBA9820FF80C200A5F2FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CBA9720FF80C200A5F2FE /* User.swift */; };
 		133CBA9A20FF80DC00A5F2FE /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CBA9920FF80DC00A5F2FE /* Comment.swift */; };
+		133CBA9C20FF8D2600A5F2FE /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CBA9B20FF8D2600A5F2FE /* NetworkHandler.swift */; };
 		13970EB520FCFBC600C748DC /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB420FCFBC600C748DC /* RxSwift.framework */; };
 		13970EB620FCFBC600C748DC /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB420FCFBC600C748DC /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		13970EB820FCFBC600C748DC /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13970EB720FCFBC600C748DC /* RxCocoa.framework */; };
@@ -85,6 +86,7 @@
 		1324ECF120FCF5F200D251E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		133CBA9720FF80C200A5F2FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		133CBA9920FF80DC00A5F2FE /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		133CBA9B20FF8D2600A5F2FE /* NetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
 		13970EB420FCFBC600C748DC /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13970EB720FCFBC600C748DC /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13970EC220FCFE0D00C748DC /* RxRealm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRealm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +191,7 @@
 		13970EDA20FD08B300C748DC /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				133CBA9B20FF8D2600A5F2FE /* NetworkHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				1324ECDD20FCF5F000D251E6 /* PostsVC.swift in Sources */,
 				13970EF120FD369700C748DC /* DetailVC.swift in Sources */,
 				133CBA9820FF80C200A5F2FE /* User.swift in Sources */,
+				133CBA9C20FF8D2600A5F2FE /* NetworkHandler.swift in Sources */,
 				13970EE420FD0F2B00C748DC /* PostsVM.swift in Sources */,
 				1324ECDB20FCF5F000D251E6 /* AppDelegate.swift in Sources */,
 				133CBA9A20FF80DC00A5F2FE /* Comment.swift in Sources */,

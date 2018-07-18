@@ -12,10 +12,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     setup()
     
     //setupRealmModel()
-
+    setupDataAccessor()
     startApp()
     
     return true
+  }
+  
+  private func setupDataAccessor() {
+    let networkDataHandler = NetworkDataHandler()
+    let cachedDataHandler = CachedDataHandler()
+    let dataAccessor = DataAccessorImplementation(networkDataHandler: networkDataHandler, cachedDataHandler: cachedDataHandler)
+    
+    dataAccessor.cached.
   }
   
   private func startApp() {
