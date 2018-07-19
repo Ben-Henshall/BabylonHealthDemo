@@ -7,7 +7,7 @@ import Realm
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  var dataAccessor: DataAccessor!
+  var dataManager: DataManager!
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
@@ -20,15 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   private func setupDataAccessor() {
-    let networkDataHandler = NetworkDataHandler()
-    let cachedDataHandler = CachedDataHandler()
-    dataAccessor = DataAccessorImplementation(networkDataHandler: networkDataHandler, cachedDataHandler: cachedDataHandler)
+    let apiService = APIService()
+    let persistanceManager = PersistanceManager()
+    dataManager = DataManager(apiService: apiService, persistanceManager: persistanceManager)
   }
   
   private func startApp() {
     let sceneCoordinator = SceneCoordinator(window: window!)
     
-    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator, dataAccessor: dataAccessor)
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator, dataManager: dataManager)
     let viewController = PostsVC(viewModel: startingViewModel)
     let navigationController = UINavigationController(rootViewController: viewController)
     navigationController.delegate = sceneCoordinator
@@ -70,13 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     user3.id = 3
     user3.username = "user3"
     
-    let post1 = Post()
+    let post1 = PostPersistance()
     post1.id = 1
     post1.body = "post-body-1"
     post1.title = "post-title-1"
     post1.userID = 1
     
-    let post2 = Post()
+    let post2 = PostPersistance()
     post2.id = 2
     post2.body = "post-body-2"
     post2.title = "post-title-2"

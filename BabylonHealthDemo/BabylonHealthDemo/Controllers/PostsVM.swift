@@ -5,13 +5,13 @@ class PostsVM {
   var testText = "first edition"
   
   private let navigationHandler: NavigationHandler
-  private let dataAccessor: DataAccessor
+  private let dataManager: DataManager
   
   public var posts: Driver<[Post]>!
   
-  init(navigationHandler: NavigationHandler, dataAccessor: DataAccessor) {
+  init(navigationHandler: NavigationHandler, dataManager: DataManager) {
     self.navigationHandler = navigationHandler
-    self.dataAccessor = dataAccessor
+    self.dataManager = dataManager
     
     setup()
   }
@@ -21,6 +21,6 @@ class PostsVM {
   }
   
   private func setupObservables() {
-    posts = dataAccessor.cached.posts().asDriver(onErrorJustReturn: [])
+    posts = dataManager.posts().asDriver(onErrorJustReturn: [])
   }
 }
