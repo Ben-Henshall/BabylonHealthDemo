@@ -18,6 +18,7 @@ protocol APIServiceType {
 
 protocol PersistanceManagerType {
   func posts() -> Single<[Post]>
+  func persistPosts(posts: [Post])
 }
 
 class DataManager: DataManagerType {
@@ -35,23 +36,34 @@ class DataManager: DataManagerType {
       
       // Get persistant objects
       let persistanceSub = self.persistanceManager.posts()
+        .debug("Posts persistance", trimOutput: true)
         .subscribe(onSuccess: { postsArray in
           observer.onNext(postsArray)
         })
+      
       // TODO: errors for above
 
       // TODO: Combine these two streams
       
       // get posts from APIService
       let newPosts = self.apiService.posts()
+      
+      // TODO: add retry logic
+      let newPostsSub = newPosts
         .subscribe(onSuccess: { postsArray in
           observer.onNext(postsArray)
         })
       // TODO: Errors for above
       
+      let createPersistanceSub = newPosts
+        .subscribe(onSuccess: { [unowned self] postsArray in
+          self.persistanceManager.persistPosts(posts: postsArray)
+          observer.onCompleted()
+        })
+      
       return Disposables.create {
         persistanceSub.dispose()
-        newPosts.dispose()
+        newPostsSub.dispose()
       }
     }.observeOn(SerialDispatchQueueScheduler(qos: .background))
       .debug("PostsDataManager", trimOutput: true)
@@ -70,6 +82,18 @@ class PersistanceManager: PersistanceManagerType {
       .map { return $0.map { Post(persistant: $0) } }
       .take(1)
       .asSingle()
+  }
+  
+  // TODO: make generic
+  func persistPosts(posts: [Post]) {
+    guard let realm = try? Realm() else { DDLogError("Could not access realm database."); return }
+    
+    try? realm.write {
+      posts.forEach { post in
+        let persistPost = PostPersistance(post: post)
+        realm.add(persistPost, update: true)
+      }
+    }
   }
 }
 
