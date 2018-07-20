@@ -4,13 +4,12 @@ import CocoaLumberjackSwift
 import RxSwift
 
 private let TitleCellReuseIdentifier: String = "TitleCellReuseIdentifier"
+private let TableViewRefreshTimer: RxTimeInterval = 0.2
 
 class PostsVC: UIViewController {
   
   private let disposeBag = DisposeBag()
-  
   var viewModel: PostsVM!
-
   private var postsTableView: UITableView!
 
   init(viewModel: PostsVM) {
@@ -35,27 +34,35 @@ class PostsVC: UIViewController {
   }
   
   func bindViewModel() {
-    // TODO: Bindings
-    viewModel.posts.drive(postsTableView.rx.items) { tableView, index, post in
+    viewModel.posts
+      .debounce(TableViewRefreshTimer)
+      .drive(postsTableView.rx.items) { _, _, post in
       let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
       cell.configure(model: TitleTableViewCellModel(post: post))
       return cell
     }
     .disposed(by: disposeBag)
+    
+    postsTableView.rx.itemSelected
+      .subscribe(onNext: { [unowned self] _ in
+        self.viewModel.didPressCell()
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.alertStream
+      .debug("alertStream", trimOutput: true)
+      .filter { $0 != nil }
+      .flatMap { [weak self] contents -> Completable in
+        guard let this = self, let contents = contents else { return Completable.empty() }
+        return this.alert(contents: contents)
+      }
+      .subscribe()
+      .disposed(by: disposeBag)
   }
   
   private func addUIElements() {
     postsTableView = UITableView(frame: .zero, style: .plain)
     postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleCellReuseIdentifier)
-//    postsTableView.estimatedRowHeight = 40
-//    postsTableView.backgroundColor = .clear
-//    postsTableView.sectionIndexColor = .clear
-//    postsTableView.tintColor = .clear
-//    postsTableView.alwaysBounceVertical = false
-//    postsTableView.allowsSelection = false
-//    postsTableView.separatorStyle = .none
-//    postsTableView.contentInsetAdjustmentBehavior = .never
-//    postsTableView.contentInset = .zero
     view.addSubview(postsTableView)
   }
   
@@ -69,6 +76,5 @@ class PostsVC: UIViewController {
     postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     postsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
     postsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-
   }
 }

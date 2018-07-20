@@ -2,12 +2,16 @@ import RxSwift
 import RxCocoa
 
 class PostsVM {
-  var testText = "first edition"
-  
+  private let disposeBag = DisposeBag()
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManager
   
-  public var posts: Driver<[Post]>!
+  public var posts: Driver<[Post]> {
+    return postsTimeline.debug("postsTimeline", trimOutput: true)
+      .asDriver(onErrorJustReturn: [])
+  }
+  
+  public var alertStream: PublishSubject<AlertContents?>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManager) {
     self.navigationHandler = navigationHandler
@@ -20,8 +24,28 @@ class PostsVM {
     setupObservables()
   }
   
+  var postsTimeline: BehaviorSubject<[Post]>!
+  
   private func setupObservables() {
-    //posts = dataManager.posts().asDriver(onErrorJustReturn: [])
-    posts = dataManager.posts(startingFrom: 10, limit: 5).asDriver(onErrorJustReturn: [])
+    postsTimeline = BehaviorSubject<[Post]>(value: [])
+    alertStream = PublishSubject<AlertContents?>()
+    
+    pullNewData()
+  }
+  
+  private func pullNewData() {
+    dataManager.posts()
+      .debug("dataManagerPosts", trimOutput: true)
+      .do(onError: { [weak self] error in
+        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+      })
+      .subscribe(onNext: { [weak self] in
+        self?.postsTimeline.onNext($0)
+        })
+      .disposed(by: disposeBag)
+  }
+  
+  public func didPressCell() {
+    pullNewData()
   }
 }

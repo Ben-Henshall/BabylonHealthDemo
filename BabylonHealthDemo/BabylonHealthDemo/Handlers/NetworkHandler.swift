@@ -6,7 +6,10 @@ import RxRealm
 protocol APIServiceType {
   func posts() -> Single<[Post]>
   func posts(startingFrom startingID: Int64, limit: Int64) -> Single<[Post]>
+  func post(id: Int64) -> Single<[Post]>
 }
+
+private let NetworkRetryTime: RxTimeInterval = 10
 
 class APIService: APIServiceType {
   
@@ -21,10 +24,9 @@ class APIService: APIServiceType {
     }
   }
   
-  // TODO: Try and make parameters type safe
   fileprivate enum Parameters: String {
-    case startID = "_start" // e.g. "10"
-    case limit = "_limit" // e.g. "5"
+    case startID = "_start"
+    case limit = "_limit"
     case id = "id"
   }
   
@@ -42,7 +44,6 @@ class APIService: APIServiceType {
   
   private func request<T: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<T> {
     return Observable.just(endpoint)
-      .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
       .map { $0.url }
       .map { url -> URLComponents in
         var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
