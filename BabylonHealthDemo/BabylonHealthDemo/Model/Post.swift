@@ -26,11 +26,16 @@ import RealmSwift
   
 }
 
-struct Post: Decodable {
+struct Post: InternalModel {
+  
   var id: Int64 = 0
   var userID: Int64 = 0 // Author
   var title = ""
   var body = ""
+  
+  func persistantModel() -> PostPersistance {
+    return PostPersistance(post: self)
+  }
 
   enum CodingKeys: String, CodingKey {
     case id
@@ -49,4 +54,9 @@ struct Post: Decodable {
     self.title = title
     self.body = body
   }
+}
+
+protocol InternalModel: Decodable {
+  associatedtype PersistantModelType: Object
+  func persistantModel() -> PersistantModelType
 }

@@ -21,6 +21,7 @@ class PostsVM {
   }
   
   private func setupObservables() {
-    posts = dataManager.posts().asDriver(onErrorJustReturn: [])
+    //posts = dataManager.posts().asDriver(onErrorJustReturn: [])
+    posts = dataManager.posts(startingFrom: 10, limit: 5).asDriver(onErrorJustReturn: [])
   }
 }
