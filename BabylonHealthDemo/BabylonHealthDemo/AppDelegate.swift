@@ -7,7 +7,7 @@ import Realm
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
-  var dataAccessor: DataAccessor!
+  var dataManager: DataManager!
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     setup()
@@ -20,15 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   private func setupDataAccessor() {
-    let networkDataHandler = NetworkDataHandler()
-    let cachedDataHandler = CachedDataHandler()
-    dataAccessor = DataAccessorImplementation(networkDataHandler: networkDataHandler, cachedDataHandler: cachedDataHandler)
+    let apiService = APIService()
+    let persistenceManager = RealmPersistenceManager()
+    dataManager = DataManager(apiService: apiService, persistenceManager: persistenceManager)
   }
   
   private func startApp() {
     let sceneCoordinator = SceneCoordinator(window: window!)
     
-    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator, dataAccessor: dataAccessor)
+    let startingViewModel = PostsVM(navigationHandler: sceneCoordinator, dataManager: dataManager)
     let viewController = PostsVC(viewModel: startingViewModel)
     let navigationController = UINavigationController(rootViewController: viewController)
     navigationController.delegate = sceneCoordinator
@@ -58,45 +58,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   // TODO: Delete when networking is in
   private func setupRealmModel() {
-    let user1 = User()
+    let user1 = UserPersistence()
     user1.id = 1
     user1.username = "user1"
     
-    let user2 = User()
+    let user2 = UserPersistence()
     user2.id = 2
     user2.username = "user2"
     
-    let user3 = User()
+    let user3 = UserPersistence()
     user3.id = 3
     user3.username = "user3"
     
-    let post1 = Post()
+    let post1 = PostPersistence()
     post1.id = 1
     post1.body = "post-body-1"
     post1.title = "post-title-1"
     post1.userID = 1
     
-    let post2 = Post()
+    let post2 = PostPersistence()
     post2.id = 2
     post2.body = "post-body-2"
     post2.title = "post-title-2"
     post2.userID = 3
     
-    let comment1 = Comment()
+    let comment1 = CommentPersistence()
     comment1.id = 1
     comment1.body = "post1-comment-1-body"
     comment1.email = "post1-comment-1-email"
     comment1.name = "post1-comment-1-name"
     comment1.postID = 1
     
-    let comment2 = Comment()
+    let comment2 = CommentPersistence()
     comment2.id = 2
     comment2.body = "post1-comment-2-body"
     comment2.email = "post1-comment-2-email"
     comment2.name = "post1-comment-2-name"
     comment2.postID = 1
     
-    let comment3 = Comment()
+    let comment3 = CommentPersistence()
     comment3.id = 3
     comment3.body = "post2-comment-3-body"
     comment3.email = "post2-comment-3-email"
