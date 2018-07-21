@@ -1,13 +1,13 @@
 import UIKit
 
 class TitleTableViewCell: UITableViewCell {
-  public func configure(model: TitleTableViewCellModel) {
+  public func configure(model: PostTitleTableViewCellModel) {
     textLabel?.text = model.title
     detailTextLabel?.text = model.body
   }
 }
 
-struct TitleTableViewCellModel {
+struct PostTitleTableViewCellModel {
   let title: String
   let body: String
   

@@ -44,8 +44,8 @@
 		13970EEA20FD14EE00C748DC /* PoweredByVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EE920FD14EE00C748DC /* PoweredByVM.swift */; };
 		13970EED20FD2C7800C748DC /* UIViewController+actualViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EEC20FD2C7800C748DC /* UIViewController+actualViewController.swift */; };
 		13970EEF20FD2F6E00C748DC /* UIViewController+IsModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EEE20FD2F6E00C748DC /* UIViewController+IsModal.swift */; };
-		13970EF120FD369700C748DC /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF020FD369700C748DC /* DetailVC.swift */; };
-		13970EF320FD36A000C748DC /* DetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF220FD36A000C748DC /* DetailVM.swift */; };
+		13970EF120FD369700C748DC /* PostDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF020FD369700C748DC /* PostDetailVC.swift */; };
+		13970EF320FD36A000C748DC /* PostDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF220FD36A000C748DC /* PostDetailVM.swift */; };
 		13EE153520FE4733008CE979 /* Scene+ViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */; };
 		13EE153820FE47D0008CE979 /* MockNavigationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */; };
 		13EE153B20FE4ADA008CE979 /* ActualViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */; };
@@ -117,8 +117,8 @@
 		13970EE920FD14EE00C748DC /* PoweredByVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByVM.swift; sourceTree = "<group>"; };
 		13970EEC20FD2C7800C748DC /* UIViewController+actualViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+actualViewController.swift"; sourceTree = "<group>"; };
 		13970EEE20FD2F6E00C748DC /* UIViewController+IsModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+IsModal.swift"; sourceTree = "<group>"; };
-		13970EF020FD369700C748DC /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
-		13970EF220FD36A000C748DC /* DetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVM.swift; sourceTree = "<group>"; };
+		13970EF020FD369700C748DC /* PostDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailVC.swift; sourceTree = "<group>"; };
+		13970EF220FD36A000C748DC /* PostDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailVM.swift; sourceTree = "<group>"; };
 		13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+ViewControllerTests.swift"; sourceTree = "<group>"; };
 		13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigationHandler.swift; sourceTree = "<group>"; };
 		13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualViewControllerTests.swift; sourceTree = "<group>"; };
@@ -247,8 +247,8 @@
 			children = (
 				1324ECDC20FCF5F000D251E6 /* PostsVC.swift */,
 				13970EE320FD0F2B00C748DC /* PostsVM.swift */,
-				13970EF020FD369700C748DC /* DetailVC.swift */,
-				13970EF220FD36A000C748DC /* DetailVM.swift */,
+				13970EF020FD369700C748DC /* PostDetailVC.swift */,
+				13970EF220FD36A000C748DC /* PostDetailVM.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -425,12 +425,12 @@
 				133CBAA721024A0D00A5F2FE /* AlertContents.swift in Sources */,
 				133CBAA52102496B00A5F2FE /* UIViewController+RxAlert.swift in Sources */,
 				13970EEA20FD14EE00C748DC /* PoweredByVM.swift in Sources */,
-				13970EF320FD36A000C748DC /* DetailVM.swift in Sources */,
+				13970EF320FD36A000C748DC /* PostDetailVM.swift in Sources */,
 				13970EE620FD12B200C748DC /* SceneTransitionType.swift in Sources */,
 				13EE153E20FE541B008CE979 /* Post.swift in Sources */,
 				1324ECDD20FCF5F000D251E6 /* PostsVC.swift in Sources */,
 				13251B4821028EFF0028454B /* RealmErrors.swift in Sources */,
-				13970EF120FD369700C748DC /* DetailVC.swift in Sources */,
+				13970EF120FD369700C748DC /* PostDetailVC.swift in Sources */,
 				133CBA9820FF80C200A5F2FE /* User.swift in Sources */,
 				133CBA9C20FF8D2600A5F2FE /* NetworkHandler.swift in Sources */,
 				13970EE420FD0F2B00C748DC /* PostsVM.swift in Sources */,

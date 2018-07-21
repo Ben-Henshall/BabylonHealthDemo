@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import CocoaLumberjackSwift
 
 // TODO: Localise
 
@@ -9,17 +10,13 @@ class PostsVM {
   private let dataManager: DataManagerType
   
   public var alertStream: PublishSubject<AlertContents?>!
-  private var postsTimeline: BehaviorSubject<[Post]>!
-
-  // TODO: remove
-  private var commentsTimeline: BehaviorSubject<[User]>!
-  public var comments: Driver<[User]> {
-    return commentsTimeline.asDriver(onErrorJustReturn: [])
-  }
   
+  private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
+  
+  public var postSelected: PublishSubject<Post>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType) {
     self.navigationHandler = navigationHandler
@@ -30,22 +27,19 @@ class PostsVM {
   
   private func setup() {
     setupObservables()
+    pullNewData()
   }
   
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
-    commentsTimeline = BehaviorSubject<[User]>(value: [])
     alertStream = PublishSubject<AlertContents?>()
+    postSelected = PublishSubject<Post>()
 
-    //pullNewData()
-    
-    dataManager.user(id: 10)
-      .do(onError: { [weak self] error in
-        // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
-      })
-      .subscribe(onNext: { [weak self] in
-        self?.commentsTimeline.onNext($0)
+    postSelected
+      .subscribe(onNext: { [weak self] post in
+        guard let this = self else { DDLogError("Attempted to transition to PostDetail when does not exist"); return }
+        let viewModel = PostDetailVM(navigationHandler: this.navigationHandler, dataManager: this.dataManager, userID: post.userID)
+        this.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
       })
       .disposed(by: disposeBag)
   }
@@ -62,9 +56,5 @@ class PostsVM {
         self?.postsTimeline.onNext($0)
       })
       .disposed(by: disposeBag)
-  }
-  
-  public func didPressCell() {
-    pullNewData()
   }
 }

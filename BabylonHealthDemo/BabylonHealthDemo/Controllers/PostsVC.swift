@@ -1,5 +1,4 @@
 import UIKit
-import RealmSwift
 import CocoaLumberjackSwift
 import RxSwift
 
@@ -7,7 +6,6 @@ private let TitleCellReuseIdentifier: String = "TitleCellReuseIdentifier"
 private let TableViewRefreshTimer: RxTimeInterval = 0.2
 
 class PostsVC: UIViewController {
-  
   private let disposeBag = DisposeBag()
   var viewModel: PostsVM!
   // TODO: Power tableView using RxDatasources to allow better insertion of cells
@@ -42,7 +40,7 @@ class PostsVC: UIViewController {
       .debounce(TableViewRefreshTimer)
       .drive(postsTableView.rx.items) { _, _, post in
         let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
-        cell.configure(model: TitleTableViewCellModel(post: post))
+        cell.configure(model: PostTitleTableViewCellModel(post: post))
         return cell
       }
       .disposed(by: disposeBag)
@@ -54,6 +52,10 @@ class PostsVC: UIViewController {
         return this.alert(contents: contents)
       }
       .subscribe()
+      .disposed(by: disposeBag)
+    
+    postsTableView.rx.modelSelected(Post.self)
+      .subscribe(viewModel.postSelected)
       .disposed(by: disposeBag)
   }
   

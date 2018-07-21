@@ -13,6 +13,9 @@ extension Scene {
       
     case .postsEmbedded(let viewModel):
       return UINavigationController(rootViewController: PostsVC(viewModel: viewModel))
+      
+    case .postDetail(let viewModel):
+      return PostDetailVC(viewModel: viewModel)
     }
   }
 }
