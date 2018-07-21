@@ -1,6 +1,9 @@
 import RxSwift
 
 protocol DataManagerType {
+  
+  // MARK: Post Retrieval
+
   /// Retrieves all posts
   ///
   /// - Returns: Observable that emits persistent posts, then fresh posts, then completes
@@ -19,6 +22,19 @@ protocol DataManagerType {
   /// - Parameter id: The identifier of the post to return
   /// - Returns: Observable that emits the persistent post, then the fresh post, then completes
   func post(id: Int64) -> Observable<[Post]>
+  
+  // MARK: User Retrieval
+
+  /// Retrieves all users
+  ///
+  /// - Returns: Observable that emits persistent users, then fresh users, then completes
+  func users() -> Observable<[User]>
+
+  /// Retrieves a user matching a given ID
+  ///
+  /// - Parameter id: The identifier of the user to return
+  /// - Returns: Observable that emits the persistent user, then the fresh user, then completes
+  func user(id: Int64) -> Observable<[User]>
 }
 
 /// Manager class that manages both the persistence of data and the pulling of new data through
@@ -34,7 +50,7 @@ class DataManager: DataManagerType {
     self.persistenceManager = persistenceManager
   }
   
-  // MARK: Post fetch methods
+  // MARK: Post retrieval methods
   func posts() -> Observable<[Post]> {
     return fetch(persistent: persistenceManager.retrievePosts(), network: apiService.posts())
   }
@@ -43,6 +59,14 @@ class DataManager: DataManagerType {
   }
   func post(id: Int64) -> Observable<[Post]> {
     return fetch(persistent: persistenceManager.retrievePost(id: id), network: apiService.post(id: id))
+  }
+  
+  // MARK: User retrieval methods
+  func users() -> Observable<[User]> {
+    return fetch(persistent: persistenceManager.retrieveUsers(), network: apiService.users())
+  }
+  func user(id: Int64) -> Observable<[User]> {
+    return fetch(persistent: persistenceManager.retrieveUser(id: id), network: apiService.user(id: id))
   }
 
   private func fetch<T: InternalModel>(persistent: Single<[T]>, network: Single<[T]>) -> Observable<[T]> {

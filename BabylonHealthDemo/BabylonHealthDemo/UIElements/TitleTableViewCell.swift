@@ -17,4 +17,10 @@ struct TitleTableViewCellModel {
     title = "\(post.id)"
     body = "\(post.userID)"
   }
+  
+  // TODO: Delete if not relevent
+  init(user: User) {
+    title = "\(user.username)"
+    body = "\(user.id)"
+  }
 }

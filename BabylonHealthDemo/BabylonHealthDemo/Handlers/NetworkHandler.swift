@@ -4,6 +4,9 @@ import RxSwift
 import RxRealm
 
 protocol APIServiceType {
+  
+  // MARK: Post fetching
+  
   /// Fetches all posts from the API
   ///
   /// - Returns: A Single that emits an array of posts then completes
@@ -22,6 +25,19 @@ protocol APIServiceType {
   /// - Parameter id: The identifier of the post to fetch
   /// - Returns: A Single emitting an array of size 1, containing the requested post
   func post(id: Int64) -> Single<[Post]>
+  
+  // MARK: User Fetching
+  
+  /// Fetches all users from the API
+  ///
+  /// - Returns: A Single that emits an array of users then completes
+  func users() -> Single<[User]>
+
+  /// Fetches a specific user object when given an ID
+  ///
+  /// - Parameter id: The identifier of the user to fetch
+  /// - Returns: A Single emitting an array of size 1, containing the requested user
+  func user(id: Int64) -> Single<[User]>
 }
 
 class APIService: APIServiceType {
@@ -53,6 +69,14 @@ class APIService: APIServiceType {
   }
   func post(id: Int64) -> Single<[Post]> {
     return request(endpoint: .posts, parameters: [.id: "\(id)"])
+  }
+  
+  // MARK: User Fetching
+  func users() -> Single<[User]> {
+    return request(endpoint: .users)
+  }
+  func user(id: Int64) -> Single<[User]> {
+    return request(endpoint: .users, parameters: [.id: "\(id)"])
   }
   
   // Generic method to request, parse and emit data from a given endpoint

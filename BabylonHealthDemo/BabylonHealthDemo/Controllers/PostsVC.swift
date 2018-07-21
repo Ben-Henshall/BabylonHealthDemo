@@ -10,8 +10,12 @@ class PostsVC: UIViewController {
   
   private let disposeBag = DisposeBag()
   var viewModel: PostsVM!
+  // TODO: Power tableView using RxDatasources to allow better insertion of cells
+  // as well as better control of multiple sections
+  // TODO: Add second cell type containing a "Load more" button, then loads the next
+  // X number of posts.
   private var postsTableView: UITableView!
-
+  
   init(viewModel: PostsVM) {
     super.init(nibName: nil, bundle: nil)
     self.viewModel = viewModel
@@ -37,11 +41,11 @@ class PostsVC: UIViewController {
     viewModel.posts
       .debounce(TableViewRefreshTimer)
       .drive(postsTableView.rx.items) { _, _, post in
-      let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
-      cell.configure(model: TitleTableViewCellModel(post: post))
-      return cell
-    }
-    .disposed(by: disposeBag)
+        let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
+        cell.configure(model: TitleTableViewCellModel(post: post))
+        return cell
+      }
+      .disposed(by: disposeBag)
     
     postsTableView.rx.itemSelected
       .subscribe(onNext: { [unowned self] _ in

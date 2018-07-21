@@ -9,16 +9,16 @@ struct Post: InternalModel {
   var title = ""
   var body = ""
   
-  // InternalModel requirement
-  var persistentModel: PostPersistence {
-    return PostPersistence(post: self)
-  }
-  
   enum CodingKeys: String, CodingKey {
     case id
     case userID = "userId"
     case title
     case body
+  }
+  
+  // MARK: InternalModel requirements
+  var persistentModel: PostPersistence {
+    return PostPersistence(post: self)
   }
   
   init(persistentModel: PostPersistence) {

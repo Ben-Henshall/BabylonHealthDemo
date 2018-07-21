@@ -6,15 +6,16 @@ import RxCocoa
 class PostsVM {
   private let disposeBag = DisposeBag()
   private let navigationHandler: NavigationHandler
-  private let dataManager: DataManager
+  private let dataManager: DataManagerType
   
+  public var alertStream: PublishSubject<AlertContents?>!
+  private var postsTimeline: BehaviorSubject<[Post]>!
+
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
   
-  public var alertStream: PublishSubject<AlertContents?>!
-  
-  init(navigationHandler: NavigationHandler, dataManager: DataManager) {
+  init(navigationHandler: NavigationHandler, dataManager: DataManagerType) {
     self.navigationHandler = navigationHandler
     self.dataManager = dataManager
     
@@ -25,26 +26,24 @@ class PostsVM {
     setupObservables()
   }
   
-  var postsTimeline: BehaviorSubject<[Post]>!
-  
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
     alertStream = PublishSubject<AlertContents?>()
-    
+
     pullNewData()
   }
   
   private func pullNewData() {
     // TODO: use `dataManager.posts(startingFrom: 0, limit: 5)` and `postsTimeline` with accumulator
     // operator to pull 5 posts, then 5 more each time the user hits a button/reaches end of tableView
-    dataManager.posts(startingFrom: 10, limit: 2)
-      .debug("posts", trimOutput: true)
+    dataManager.posts()
       .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
         self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
       })
       .subscribe(onNext: { [weak self] in
         self?.postsTimeline.onNext($0)
-        })
+      })
       .disposed(by: disposeBag)
   }
   

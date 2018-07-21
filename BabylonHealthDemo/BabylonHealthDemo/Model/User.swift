@@ -1,7 +1,26 @@
 import Foundation
 import RealmSwift
 
-@objcMembers class User: Object, Decodable {
+struct User: Decodable, InternalModel {
+  var id: Int64 = 0
+  var username: String = ""
+  
+  // MARK: InternalModel requirements
+  var persistentModel: UserPersistence {
+    return UserPersistence(user: self)
+  }
+  
+  init(persistentModel: UserPersistence) {
+    self.init(id: persistentModel.id, username: persistentModel.username)
+  }
+  
+  init(id: Int64, username: String) {
+    self.id = id
+    self.username = username
+  }
+}
+
+@objcMembers class UserPersistence: Object {
   dynamic var id: Int64 = 0
   dynamic var username = ""
   // Left other, unused properties out of the model due to time.
@@ -11,5 +30,15 @@ import RealmSwift
   
   override static func primaryKey() -> String? {
     return "id"
+  }
+  
+  convenience init(user: User) {
+    self.init(id: user.id, username: user.username)
+  }
+  
+  convenience init(id: Int64, username: String) {
+    self.init()
+    self.id = id
+    self.username = username
   }
 }

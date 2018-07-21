@@ -58,15 +58,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   // TODO: Delete when networking is in
   private func setupRealmModel() {
-    let user1 = User()
+    let user1 = UserPersistence()
     user1.id = 1
     user1.username = "user1"
     
-    let user2 = User()
+    let user2 = UserPersistence()
     user2.id = 2
     user2.username = "user2"
     
-    let user3 = User()
+    let user3 = UserPersistence()
     user3.id = 3
     user3.username = "user3"
     
