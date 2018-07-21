@@ -38,6 +38,25 @@ protocol APIServiceType {
   /// - Parameter id: The identifier of the user to fetch
   /// - Returns: A Single emitting an array of size 1, containing the requested user
   func user(id: Int64) -> Single<[User]>
+  
+  // MARK: Comment Fetching
+  
+  /// Fetches all comments from the API
+  ///
+  /// - Returns: A Single that emits an array of comments then completes
+  func comments() -> Single<[Comment]>
+  
+  /// Fetches a specific Comment object when given an ID
+  ///
+  /// - Parameter id: The identifier of the Comment to fetch
+  /// - Returns: A Single emitting an array of size 1, containing the requested Comment
+  func comment(id: Int64) -> Single<[Comment]>
+  
+  /// Fetches all Comments with a matching postID form the API
+  ///
+  /// - Parameter postID: The identifier of the post to fetch comments for
+  /// - Returns: A Single emitting an array of all comments with a matching postID
+  func comments(on postID: Int64) -> Single<[Comment]>
 }
 
 class APIService: APIServiceType {
@@ -58,6 +77,8 @@ class APIService: APIServiceType {
     case startID = "_start"
     case limit = "_limit"
     case id = "id"
+    case postID = "postId"
+    case userID = "userId"
   }
   
   // MARK: Post Fetching
@@ -77,6 +98,17 @@ class APIService: APIServiceType {
   }
   func user(id: Int64) -> Single<[User]> {
     return request(endpoint: .users, parameters: [.id: "\(id)"])
+  }
+  
+  // MARK: Comment Fetching
+  func comments() -> Single<[Comment]> {
+    return request(endpoint: .comments)
+  }
+  func comment(id: Int64) -> Single<[Comment]> {
+    return request(endpoint: .comments, parameters: [.id: "\(id)"])
+  }
+  func comments(on postID: Int64) -> Single<[Comment]> {
+    return request(endpoint: .comments, parameters: [.postID: "\(postID)"])
   }
   
   // Generic method to request, parse and emit data from a given endpoint

@@ -14,13 +14,19 @@ struct TitleTableViewCellModel {
   init(post: Post) {
     //title = post.title
     //body = post.body
-    title = "\(post.id)"
-    body = "\(post.userID)"
+    title = "postID: \(post.id)"
+    body = "userID: \(post.userID)"
   }
   
   // TODO: Delete if not relevent
   init(user: User) {
-    title = "\(user.username)"
-    body = "\(user.id)"
+    title = "username: \(user.username)"
+    body = "userID: \(user.id)"
+  }
+  
+  // TODO: Delete if not relevent
+  init(comment: Comment) {
+    title = "postID: \(comment.postID)"
+    body = "commentID: \(comment.id)"
   }
 }

@@ -11,6 +11,12 @@ class PostsVM {
   public var alertStream: PublishSubject<AlertContents?>!
   private var postsTimeline: BehaviorSubject<[Post]>!
 
+  // TODO: remove
+  private var commentsTimeline: BehaviorSubject<[User]>!
+  public var comments: Driver<[User]> {
+    return commentsTimeline.asDriver(onErrorJustReturn: [])
+  }
+  
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
@@ -28,9 +34,20 @@ class PostsVM {
   
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
+    commentsTimeline = BehaviorSubject<[User]>(value: [])
     alertStream = PublishSubject<AlertContents?>()
 
-    pullNewData()
+    //pullNewData()
+    
+    dataManager.user(id: 10)
+      .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
+        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+      })
+      .subscribe(onNext: { [weak self] in
+        self?.commentsTimeline.onNext($0)
+      })
+      .disposed(by: disposeBag)
   }
   
   private func pullNewData() {

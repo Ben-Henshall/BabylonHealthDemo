@@ -82,21 +82,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     post2.title = "post-title-2"
     post2.userID = 3
     
-    let comment1 = Comment()
+    let comment1 = CommentPersistence()
     comment1.id = 1
     comment1.body = "post1-comment-1-body"
     comment1.email = "post1-comment-1-email"
     comment1.name = "post1-comment-1-name"
     comment1.postID = 1
     
-    let comment2 = Comment()
+    let comment2 = CommentPersistence()
     comment2.id = 2
     comment2.body = "post1-comment-2-body"
     comment2.email = "post1-comment-2-email"
     comment2.name = "post1-comment-2-name"
     comment2.postID = 1
     
-    let comment3 = Comment()
+    let comment3 = CommentPersistence()
     comment3.id = 3
     comment3.body = "post2-comment-3-body"
     comment3.email = "post2-comment-3-email"

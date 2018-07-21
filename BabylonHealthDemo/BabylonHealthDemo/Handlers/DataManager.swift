@@ -35,6 +35,25 @@ protocol DataManagerType {
   /// - Parameter id: The identifier of the user to return
   /// - Returns: Observable that emits the persistent user, then the fresh user, then completes
   func user(id: Int64) -> Observable<[User]>
+  
+  // MARK: Comment Retrieval
+  
+  /// Retrieves all comments
+  ///
+  /// - Returns: Observable that emits persistent comments, then fresh comments, then completes
+  func comments() -> Observable<[Comment]>
+  
+  /// Retrieves a comment matching a given ID
+  ///
+  /// - Parameter id: The identifier of the comment to return
+  /// - Returns: Observable that emits the persistent comment, then the fresh comment, then completes
+  func comment(id: Int64) -> Observable<[Comment]>
+  
+  /// Retrieves all comments on a given post
+  ///
+  /// - Parameter id: The identifier of the post to retrieve comments for
+  /// - Returns: Observable that emits the persistent comments on a post, then the fresh comments, then completes
+  func comments(on postID: Int64) -> Observable<[Comment]>
 }
 
 /// Manager class that manages both the persistence of data and the pulling of new data through
@@ -69,6 +88,17 @@ class DataManager: DataManagerType {
     return fetch(persistent: persistenceManager.retrieveUser(id: id), network: apiService.user(id: id))
   }
 
+  // MARK: Comment retrieval methods
+  func comments() -> Observable<[Comment]> {
+    return fetch(persistent: persistenceManager.retrieveComments(), network: apiService.comments())
+  }
+  func comment(id: Int64) -> Observable<[Comment]> {
+    return fetch(persistent: persistenceManager.retrieveComment(id: id), network: apiService.comment(id: id))
+  }
+  func comments(on postID: Int64) -> Observable<[Comment]> {
+    return fetch(persistent: persistenceManager.retrieveComments(on: postID), network: apiService.comments(on: postID))
+  }
+  
   private func fetch<T: InternalModel>(persistent: Single<[T]>, network: Single<[T]>) -> Observable<[T]> {
     return Observable.create { [unowned self] observer in
       
@@ -97,6 +127,7 @@ class DataManager: DataManagerType {
         persistenceSub.dispose()
         networkSub.dispose()
       }
-    }.observeOn(SerialDispatchQueueScheduler(qos: .background))
+    }.debug("fetch", trimOutput: true)
+      .observeOn(SerialDispatchQueueScheduler(qos: .background))
   }
 }

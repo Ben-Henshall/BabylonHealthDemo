@@ -47,14 +47,7 @@ class PostsVC: UIViewController {
       }
       .disposed(by: disposeBag)
     
-    postsTableView.rx.itemSelected
-      .subscribe(onNext: { [unowned self] _ in
-        self.viewModel.didPressCell()
-      })
-      .disposed(by: disposeBag)
-    
     viewModel.alertStream
-      .debug("alertStream", trimOutput: true)
       .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in
         guard let this = self, let contents = contents else { return Completable.empty() }
