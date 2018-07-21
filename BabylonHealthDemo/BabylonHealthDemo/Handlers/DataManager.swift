@@ -1,77 +1,78 @@
 import RxSwift
 
 protocol DataManagerType {
+  /// Retrieves all posts
+  ///
+  /// - Returns: Observable that emits persistent posts, then fresh posts, then completes
   func posts() -> Observable<[Post]>
+  
+  /// Retrieves X posts starting from a given ID
+  ///
+  /// - Parameters:
+  ///   - startingID: The ID of the first post
+  ///   - limit: The number of posts to return
+  /// - Returns: Observable that emits persistent posts, then fresh posts, then completes
   func posts(startingFrom startingID: Int64, limit: Int64) -> Observable<[Post]>
+  
+  /// Retrieves a post matching a given ID
+  ///
+  /// - Parameter id: The identifier of the post to return
+  /// - Returns: Observable that emits the persistent post, then the fresh post, then completes
   func post(id: Int64) -> Observable<[Post]>
 }
 
+/// Manager class that manages both the persistence of data and the pulling of new data through
+/// different services
 class DataManager: DataManagerType {
   private let disposeBag = DisposeBag()
   
   private let apiService: APIServiceType
-  private let persistanceManager: PersistanceManagerType
+  private let persistenceManager: PersistenceManagerType
   
-  init(apiService: APIServiceType, persistanceManager: PersistanceManagerType) {
+  init(apiService: APIServiceType, persistenceManager: PersistenceManagerType) {
     self.apiService = apiService
-    self.persistanceManager = persistanceManager
+    self.persistenceManager = persistenceManager
   }
   
   // MARK: Post fetch methods
   func posts() -> Observable<[Post]> {
-    return fetch(persistant: persistanceManager.retrievePersistantPosts(), network: apiService.posts())
+    return fetch(persistent: persistenceManager.retrievePosts(), network: apiService.posts())
   }
   func posts(startingFrom startingID: Int64, limit: Int64) -> Observable<[Post]> {
-    return fetch(persistant: persistanceManager.retrievePersistantPosts(), network: apiService.posts(startingFrom: startingID, limit: limit))
+    return fetch(persistent: persistenceManager.retrievePosts(startingFrom: startingID, limit: limit), network: apiService.posts(startingFrom: startingID, limit: limit))
   }
   func post(id: Int64) -> Observable<[Post]> {
-    return fetch(persistant: persistanceManager.retrievePersistantPosts(), network: apiService.post(id: id))
+    return fetch(persistent: persistenceManager.retrievePost(id: id), network: apiService.post(id: id))
   }
 
-  private func fetch<T: InternalModel>(persistant: Single<[T]>, network: Single<[T]>) -> Observable<[T]> {
+  private func fetch<T: InternalModel>(persistent: Single<[T]>, network: Single<[T]>) -> Observable<[T]> {
     return Observable.create { [unowned self] observer in
       
-      // Get persistant objects
-      let persistanceSub = persistant
-        .subscribe(onSuccess: { (persistantArray) in
-          observer.onNext(persistantArray)
+      // Get any persistent objects and emit them
+      let persistenceSub = persistent
+        .subscribe(onSuccess: { (persistentArray) in
+          observer.onNext(persistentArray)
         }, onError: { error in
           observer.onError(error)
         })
-      
-      // TODO: errors for above
-      
-      // TODO: Combine these two streams
-      
-      // get posts from APIService
-      let newObjects = network
-        .asObservable()
-        .share(replay: 1, scope: .forever)
-        .asSingle()
-      // TODO: Review above
-      
-      // TODO: add retry logic
-      let networkSub = newObjects
+
+      // Get new objects from from the API, add them to persistence then emit them. 
+      let networkSub = network
+        // TODO: FlatMap into persist so we can maintain the errors
+        .do(onSuccess: { newObjectsArray in
+          self.persistenceManager.persist(persistentModels: newObjectsArray)
+        })
         .subscribe(onSuccess: { newObjectsArray in
           observer.onNext(newObjectsArray)
+          observer.onCompleted()
         }, onError: { error in
           observer.onError(error)
         })
-      // TODO: Errors for above
-      
-      let createPersistanceSub = newObjects
-        .subscribe(onSuccess: { [unowned self] newObjectsArray in
-          self.persistanceManager.persist(persistantModels: newObjectsArray)
-          observer.onCompleted()
-          }, onError: { error in
-            observer.onError(error)
-        })
-      
+
       return Disposables.create {
-        persistanceSub.dispose()
+        persistenceSub.dispose()
         networkSub.dispose()
-        createPersistanceSub.dispose()
       }
-      }.observeOn(SerialDispatchQueueScheduler(qos: .background))
+    }.observeOn(SerialDispatchQueueScheduler(qos: .background))
   }
 }

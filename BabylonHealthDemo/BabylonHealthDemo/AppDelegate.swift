@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   private func setupDataAccessor() {
     let apiService = APIService()
-    let persistanceManager = PersistanceManager()
-    dataManager = DataManager(apiService: apiService, persistanceManager: persistanceManager)
+    let persistenceManager = RealmPersistenceManager()
+    dataManager = DataManager(apiService: apiService, persistenceManager: persistenceManager)
   }
   
   private func startApp() {
@@ -70,13 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     user3.id = 3
     user3.username = "user3"
     
-    let post1 = PostPersistance()
+    let post1 = PostPersistence()
     post1.id = 1
     post1.body = "post-body-1"
     post1.title = "post-title-1"
     post1.userID = 1
     
-    let post2 = PostPersistance()
+    let post2 = PostPersistence()
     post2.id = 2
     post2.body = "post-body-2"
     post2.title = "post-title-2"

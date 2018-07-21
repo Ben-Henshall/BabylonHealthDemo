@@ -12,7 +12,9 @@ struct TitleTableViewCellModel {
   let body: String
   
   init(post: Post) {
-    title = post.title
-    body = post.body
+    //title = post.title
+    //body = post.body
+    title = "\(post.id)"
+    body = "\(post.userID)"
   }
 }

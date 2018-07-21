@@ -1,14 +1,15 @@
 import RxSwift
 import RxCocoa
 
+// TODO: Localise
+
 class PostsVM {
   private let disposeBag = DisposeBag()
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManager
   
   public var posts: Driver<[Post]> {
-    return postsTimeline.debug("postsTimeline", trimOutput: true)
-      .asDriver(onErrorJustReturn: [])
+    return postsTimeline.asDriver(onErrorJustReturn: [])
   }
   
   public var alertStream: PublishSubject<AlertContents?>!
@@ -34,8 +35,10 @@ class PostsVM {
   }
   
   private func pullNewData() {
-    dataManager.posts()
-      .debug("dataManagerPosts", trimOutput: true)
+    // TODO: use `dataManager.posts(startingFrom: 0, limit: 5)` and `postsTimeline` with accumulator
+    // operator to pull 5 posts, then 5 more each time the user hits a button/reaches end of tableView
+    dataManager.posts(startingFrom: 10, limit: 2)
+      .debug("posts", trimOutput: true)
       .do(onError: { [weak self] error in
         self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
       })

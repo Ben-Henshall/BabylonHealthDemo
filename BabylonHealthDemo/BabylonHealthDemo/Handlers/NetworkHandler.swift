@@ -4,12 +4,25 @@ import RxSwift
 import RxRealm
 
 protocol APIServiceType {
+  /// Fetches all posts from the API
+  ///
+  /// - Returns: A Single that emits an array of posts then completes
   func posts() -> Single<[Post]>
+  
+  /// Retrieves X Post objects starting from a given ID
+  ///
+  /// - Parameters:
+  ///   - startingID: The ID of the first post
+  ///   - limit: The number of posts to return
+  /// - Returns: Single that emits posts pulled from an API
   func posts(startingFrom startingID: Int64, limit: Int64) -> Single<[Post]>
+  
+  /// Fetches a specific post object when given an ID
+  ///
+  /// - Parameter id: The identifier of the post to fetch
+  /// - Returns: A Single emitting an array of size 1, containing the requested post
   func post(id: Int64) -> Single<[Post]>
 }
-
-private let NetworkRetryTime: RxTimeInterval = 10
 
 class APIService: APIServiceType {
   
@@ -24,24 +37,25 @@ class APIService: APIServiceType {
     }
   }
   
+  // TODO: Improve by making inputs type-safe (e.g. converting Ints to to strings)
   fileprivate enum Parameters: String {
     case startID = "_start"
     case limit = "_limit"
     case id = "id"
   }
   
+  // MARK: Post Fetching
   func posts() -> Single<[Post]> {
     return request(endpoint: .posts)
   }
-  
   func posts(startingFrom startingID: Int64, limit: Int64) -> Single<[Post]> {
     return request(endpoint: .posts, parameters: [.startID: "\(startingID)", .limit: "\(limit)"])
   }
-  
   func post(id: Int64) -> Single<[Post]> {
     return request(endpoint: .posts, parameters: [.id: "\(id)"])
   }
   
+  // Generic method to request, parse and emit data from a given endpoint
   private func request<T: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<T> {
     return Observable.just(endpoint)
       .map { $0.url }
