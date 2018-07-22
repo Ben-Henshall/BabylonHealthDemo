@@ -10,8 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var dataManager: DataManager!
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    setup()
     
+    setup()
     setupDataAccessor()
     startApp()
     

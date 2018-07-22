@@ -14,7 +14,7 @@ class PostsVC: UIViewController {
   private var postsTableView: UITableView!
   private var activityIndicator: UIActivityIndicatorView!
   private var refreshControl: UIRefreshControl!
-  private var hasUpdatedConstraints: Bool = false
+  private var didSetupConstraints: Bool = false
   
   init(viewModel: PostsVM) {
     super.init(nibName: nil, bundle: nil)
@@ -117,7 +117,7 @@ class PostsVC: UIViewController {
   
   override func updateViewConstraints() {
     super.updateViewConstraints()
-    if !hasUpdatedConstraints {
+    if !didSetupConstraints {
       postsTableView.translatesAutoresizingMaskIntoConstraints = false
       postsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
       postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true

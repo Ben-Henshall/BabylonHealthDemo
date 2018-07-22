@@ -6,7 +6,7 @@ struct DetailedTableViewCellModel {
   let useLargeDetail: Bool
 }
 
-class DetailedTitleTableViewCell: UITableViewCell, Reusable {
+class DetailedTitleTableViewCell: UITableViewCell {
   
   private var didSetupConstraints: Bool = false
   var titleLabel: UILabel!
@@ -87,3 +87,5 @@ class DetailedTitleTableViewCell: UITableViewCell, Reusable {
     }
   }
 }
+
+extension DetailedTitleTableViewCell: Reusable { }

@@ -16,7 +16,7 @@ struct Post: InternalModel {
     case body
   }
   
-  // MARK: InternalModel requirements
+  // MARK: - InternalModel requirements
   var persistentModel: PostPersistence {
     return PostPersistence(post: self)
   }

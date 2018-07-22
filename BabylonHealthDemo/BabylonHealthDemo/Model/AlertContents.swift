@@ -1,3 +1,4 @@
+/// Model representing information required to display an AlertController
 struct AlertContents {
   var title: String
   var text: String?

@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-struct User: Decodable, InternalModel {
+struct User: InternalModel {
   var id: Int64 = 0
   var username: String = ""
   
@@ -23,7 +23,7 @@ struct User: Decodable, InternalModel {
 @objcMembers class UserPersistence: Object {
   dynamic var id: Int64 = 0
   dynamic var username = ""
-  // Left other, unused properties out of the model due to time.
+  // I Left other unused properties out of the model due to time.
   // If I were to add them, I'd likely have to add a realm migration
   // Plus - if we're not using address of users, it would be best not to store it.
   // Accidentally leaking user details would _not_ be good

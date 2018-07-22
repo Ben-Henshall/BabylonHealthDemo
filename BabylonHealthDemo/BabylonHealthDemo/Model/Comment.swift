@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-struct Comment: Decodable, InternalModel {
+struct Comment: InternalModel {
   var id: Int64 = 0
   var name = ""
   var email = ""

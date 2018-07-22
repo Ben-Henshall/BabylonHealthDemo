@@ -5,12 +5,12 @@ struct TitleTableViewCellModel {
   let useAltBackground: Bool
   
   init(post: Post, useAltBackground: Bool) {
-    title = post.title
+    self.title = post.title
     self.useAltBackground = useAltBackground
   }
 }
 
-class TitleTableViewCell: UITableViewCell, Reusable {
+class TitleTableViewCell: UITableViewCell {
 
   private var didSetupConstraints: Bool = false
   var titleLabel: UILabel!
@@ -65,3 +65,5 @@ class TitleTableViewCell: UITableViewCell, Reusable {
     }
   }
 }
+
+extension TitleTableViewCell: Reusable { }

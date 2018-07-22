@@ -9,6 +9,7 @@ class PostDetailVC: UIViewController {
   
   private var tableView: UITableView!
   private var activityIndicator: UIActivityIndicatorView!
+  private var didSetupConstraints: Bool = false
 
   init(viewModel: PostDetailVM) {
     super.init(nibName: nil, bundle: nil)
@@ -107,14 +108,16 @@ class PostDetailVC: UIViewController {
   
   override func updateViewConstraints() {
     super.updateViewConstraints()
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-    tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-    
-    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-    activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-    activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    if !didSetupConstraints {
+      tableView.translatesAutoresizingMaskIntoConstraints = false
+      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      
+      activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+      activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+      activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    }
   }
 }
