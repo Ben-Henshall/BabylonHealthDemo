@@ -5,7 +5,11 @@ struct TitleTableViewCellModel {
   let useAltBackground: Bool
   
   init(post: Post, useAltBackground: Bool) {
-    self.title = post.title
+    self.init(title: post.title, useAltBackground: useAltBackground)
+  }
+  
+  init(title: String, useAltBackground: Bool) {
+    self.title = title
     self.useAltBackground = useAltBackground
   }
 }
