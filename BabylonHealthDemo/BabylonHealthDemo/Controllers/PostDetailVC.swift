@@ -37,7 +37,6 @@ class PostDetailVC: UIViewController {
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
-    .debug("authorCell", trimOutput: true)
     
     let bodyCell = viewModel.body
       .filter { !$0.isEmpty }
@@ -56,7 +55,6 @@ class PostDetailVC: UIViewController {
     let latest = Driver.combineLatest(cells)
     
     latest
-      .debug("latest", trimOutput: true)
       .drive(tableView.rx.items) { _, _, model in
         let cell = DetailedTitleTableViewCell()
         cell.configure(model: model)

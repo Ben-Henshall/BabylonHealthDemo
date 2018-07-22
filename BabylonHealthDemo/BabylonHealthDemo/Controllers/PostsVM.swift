@@ -41,7 +41,7 @@ class PostsVM {
     postSelected = PublishSubject<Post>()
     pullNewData = PublishSubject<Void>()
 
-    title = Driver.just("Posts")
+    title = Driver.just(NSLocalizedString("post_screen_title", comment: "Posts"))
     
     postSelected
       .subscribe(onNext: { [weak self] post in
@@ -58,7 +58,7 @@ class PostsVM {
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        let alert = AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)
+        let alert = AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil)
         self?.alertStream.onNext(alert)
       })
       .subscribe(onNext: { [weak self] in

@@ -30,7 +30,7 @@ class PostDetailVM {
     self.post
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
       .subscribe()
       .disposed(by: disposeBag)
@@ -44,9 +44,9 @@ class PostDetailVM {
   
   private func setupObservables() {
     alertStream = PublishSubject<AlertContents?>()
-    title = Driver.just("Post Detail")
+    title = Driver.just(NSLocalizedString("post_detail_screen_title", comment: "Post Detail"))
     
-    authorCellTitle = Driver.just("Author")
+    authorCellTitle = Driver.just(NSLocalizedString("post_detail_screen_author", comment: "Author"))
     // TODO: Change Single retrievals to not retrieve array
     author = post
       // Only take the first post, as the userID won't change and taking 1 will prevent making
@@ -58,15 +58,14 @@ class PostDetailVM {
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
       .filter { !$0.isEmpty}
-      .debug("author", trimOutput: true)
       .map { $0.first! }
       .map { $0.username }
       .asDriver(onErrorJustReturn: "")
     
-    bodyCellTitle = Driver.just("Body")
+    bodyCellTitle = Driver.just(NSLocalizedString("post_detail_screen_body", comment: "Body"))
     body = post
       .map { $0.body }
       .asDriver(onErrorJustReturn: "")
@@ -81,11 +80,11 @@ class PostDetailVM {
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
       .asDriver(onErrorJustReturn: [])
     
-    numberOfCommentsCellTitle = Driver.just("Number of comments")
+    numberOfCommentsCellTitle = Driver.just(NSLocalizedString("post_detail_screen_num_of_comments", comment: "Number of comments"))
     numberOfComments = comments
       .map { $0.count }
   }
