@@ -17,7 +17,7 @@ class PostDetailVM {
   public var numberOfComments: Driver<Int>!
   
   private var post: Observable<Post>!
-  
+
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType, post: Post) {
     self.navigationHandler = navigationHandler
     self.dataManager = dataManager
@@ -26,6 +26,11 @@ class PostDetailVM {
       .map { $0.first! }
       .share(replay: 1, scope: .whileConnected)
 
+    // Subscription to kick off networking
+    self.post
+      .subscribe()
+      .disposed(by: disposeBag)
+    
     setup()
   }
   
