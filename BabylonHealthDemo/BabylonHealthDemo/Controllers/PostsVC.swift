@@ -13,6 +13,7 @@ class PostsVC: UIViewController {
   // X number of posts.
   private var postsTableView: UITableView!
   private var activityIndicator: UIActivityIndicatorView!
+  private var refreshControl: UIRefreshControl!
   private var hasUpdatedConstraints: Bool = false
   
   init(viewModel: PostsVM) {
@@ -50,6 +51,10 @@ class PostsVC: UIViewController {
     
     viewModel.posts
       .debounce(TableViewRefreshTimer)
+      .do(onNext: { [weak self] _ in
+        guard let this = self else { return }
+        this.refreshControl.endRefreshing()
+      })
       .drive(postsTableView.rx.items) { _, row, post in
         let useAltBackground = row % 2 == 0
         let cell = TitleTableViewCell()
@@ -83,6 +88,11 @@ class PostsVC: UIViewController {
       .map { !$0 }
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
+    
+    postsTableView.refreshControl!.rx
+      .controlEvent(.valueChanged)
+      .bind(to: viewModel.pullNewData)
+      .disposed(by: disposeBag)
   }
   
   private func addUIElements() {
@@ -93,12 +103,16 @@ class PostsVC: UIViewController {
     activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     activityIndicator.startAnimating()
     view.addSubview(activityIndicator)
+    
+    refreshControl = UIRefreshControl()
+    postsTableView.refreshControl = refreshControl
   }
   
   private func setupStyling() {
     postsTableView.separatorStyle = .none
     view.backgroundColor = .white
     activityIndicator.color = .titleBlue
+    refreshControl.tintColor = .titleBlue
   }
   
   override func updateViewConstraints() {

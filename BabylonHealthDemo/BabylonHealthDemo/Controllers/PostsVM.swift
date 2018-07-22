@@ -16,6 +16,8 @@ class PostsVM {
 
   public var title: Driver<String>!
   
+  public var pullNewData: PublishSubject<Void>!
+  
   private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
@@ -32,13 +34,14 @@ class PostsVM {
   
   private func setup() {
     setupObservables()
-    pullNewData()
+    //pullNewData()
   }
   
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
     alertStream = BehaviorSubject<AlertContents?>(value: nil)
     postSelected = PublishSubject<Post>()
+    pullNewData = PublishSubject<Void>()
 
     title = Driver.just("Posts")
     
@@ -49,19 +52,23 @@ class PostsVM {
         this.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
       })
       .disposed(by: disposeBag)
-  }
-  
-  private func pullNewData() {
-    // TODO: use `dataManager.posts(startingFrom: 0, limit: 5)` and `postsTimeline` with accumulator
-    // operator to pull 5 posts, then 5 more each time the user hits a button/reaches end of tableView
-    dataManager.posts()
+    
+    pullNewData
+      .flatMap { [weak self] _ -> Observable<[Post]> in
+        guard let this = self else { return Observable.empty() }
+        return this.dataManager.posts()
+      }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+        let alert = AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)
+        self?.alertStream.onNext(alert)
       })
+      .debug("pullNewData", trimOutput: true)
       .subscribe(onNext: { [weak self] in
         self?.postsTimeline.onNext($0)
       })
       .disposed(by: disposeBag)
+    
+    pullNewData.onNext(())
   }
 }
