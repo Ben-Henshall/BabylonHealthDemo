@@ -1,25 +1,29 @@
 import RxSwift
 import RxCocoa
+import CocoaLumberjackSwift
 
 // TODO: Localise
+// TODO: Add MARK comments
+// TODO" Check for memory leaks
+// TODO: Add refresh control
 
 class PostsVM {
   private let disposeBag = DisposeBag()
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManagerType
   
-  public var alertStream: PublishSubject<AlertContents?>!
-  private var postsTimeline: BehaviorSubject<[Post]>!
+  public var alertStream: BehaviorSubject<AlertContents?>!
 
-  // TODO: remove
-  private var commentsTimeline: BehaviorSubject<[User]>!
-  public var comments: Driver<[User]> {
-    return commentsTimeline.asDriver(onErrorJustReturn: [])
-  }
+  public var title: Driver<String>!
   
+  public var pullNewData: PublishSubject<Void>!
+  
+  private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
+  
+  public var postSelected: PublishSubject<Post>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType) {
     self.navigationHandler = navigationHandler
@@ -30,41 +34,41 @@ class PostsVM {
   
   private func setup() {
     setupObservables()
+    //pullNewData()
   }
   
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
-    commentsTimeline = BehaviorSubject<[User]>(value: [])
-    alertStream = PublishSubject<AlertContents?>()
+    alertStream = BehaviorSubject<AlertContents?>(value: nil)
+    postSelected = PublishSubject<Post>()
+    pullNewData = PublishSubject<Void>()
 
-    //pullNewData()
+    title = Driver.just("Posts")
     
-    dataManager.user(id: 10)
-      .do(onError: { [weak self] error in
-        // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
-      })
-      .subscribe(onNext: { [weak self] in
-        self?.commentsTimeline.onNext($0)
+    postSelected
+      .subscribe(onNext: { [weak self] post in
+        guard let this = self else { DDLogError("Attempted to transition to PostDetail when does not exist"); return }
+        let viewModel = PostDetailVM(navigationHandler: this.navigationHandler, dataManager: this.dataManager, post: post)
+        this.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
       })
       .disposed(by: disposeBag)
-  }
-  
-  private func pullNewData() {
-    // TODO: use `dataManager.posts(startingFrom: 0, limit: 5)` and `postsTimeline` with accumulator
-    // operator to pull 5 posts, then 5 more each time the user hits a button/reaches end of tableView
-    dataManager.posts()
+    
+    pullNewData
+      .flatMap { [weak self] _ -> Observable<[Post]> in
+        guard let this = self else { return Observable.empty() }
+        return this.dataManager.posts()
+      }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+        let alert = AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)
+        self?.alertStream.onNext(alert)
       })
+      .debug("pullNewData", trimOutput: true)
       .subscribe(onNext: { [weak self] in
         self?.postsTimeline.onNext($0)
       })
       .disposed(by: disposeBag)
-  }
-  
-  public func didPressCell() {
-    pullNewData()
+    
+    pullNewData.onNext(())
   }
 }

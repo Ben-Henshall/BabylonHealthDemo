@@ -10,4 +10,7 @@ enum Scene {
   
   // Posts VC, embedded in a navigation controller
   case postsEmbedded(PostsVM)
+  
+  // PostDetailVC
+  case postDetail(PostDetailVM)
 }

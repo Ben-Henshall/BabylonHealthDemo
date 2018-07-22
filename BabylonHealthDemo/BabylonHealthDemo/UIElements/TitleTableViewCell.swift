@@ -1,32 +1,75 @@
 import UIKit
 
-class TitleTableViewCell: UITableViewCell {
+class TitleTableViewCell: UITableViewCell, Reusable {
+
+  private var didSetupConstraints: Bool = false
+  var titleLabel: UILabel!
+  
+  init() {
+    super.init(style: .default, reuseIdentifier: TitleTableViewCell.reuseIdentifier)
+    setup()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   public func configure(model: TitleTableViewCellModel) {
-    textLabel?.text = model.title
-    detailTextLabel?.text = model.body
+    titleLabel?.text = model.title
+    backgroundColor = model.useAltBackground ? .powderBlue : .white
+  }
+  
+  private func setup() {
+    addUIElements()
+    setupStyling()
+    self.setNeedsUpdateConstraints()
+  }
+  
+  private func addUIElements() {
+    // Remove the system elements
+    textLabel?.removeFromSuperview()
+    
+    titleLabel = UILabel()
+    titleLabel.textAlignment = .center
+    titleLabel.numberOfLines = 2
+    contentView.addSubview(titleLabel)
+    
+    let coloredView = UIView()
+    coloredView.backgroundColor = .pastelBlue
+    selectedBackgroundView = coloredView
+  }
+  
+  private func setupStyling() {
+    titleLabel.font = .h1
+    titleLabel.textColor = .titleBlue
+  }
+  
+  override func updateConstraints() {
+    super.updateConstraints()
+    if !didSetupConstraints {
+      titleLabel.translatesAutoresizingMaskIntoConstraints = false
+      titleLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+      titleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+      titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
+      titleLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -24).isActive = true
+    }
   }
 }
 
 struct TitleTableViewCellModel {
   let title: String
-  let body: String
+  let useAltBackground: Bool
   
-  init(post: Post) {
-    //title = post.title
-    //body = post.body
-    title = "postID: \(post.id)"
-    body = "userID: \(post.userID)"
-  }
-  
-  // TODO: Delete if not relevent
-  init(user: User) {
-    title = "username: \(user.username)"
-    body = "userID: \(user.id)"
-  }
-  
-  // TODO: Delete if not relevent
-  init(comment: Comment) {
-    title = "postID: \(comment.postID)"
-    body = "commentID: \(comment.id)"
+  init(post: Post, useAltBackground: Bool) {
+    title = post.title
+    self.useAltBackground = useAltBackground
   }
 }
+
+//class PostTitleTableViewCellModel: TitleTableViewCellModel {
+//  convenience init(post: Post) {
+//    self.init(title: "postID: \(post.id)", body: "userID: \(post.userID)")
+//  }
+//}
+
+

@@ -104,6 +104,7 @@ class DataManager: DataManagerType {
       
       // Get any persistent objects and emit them
       let persistenceSub = persistent
+        // Due to Realm threading issues, this work can't easily be offloaded to a background thread.
         .subscribe(onSuccess: { (persistentArray) in
           observer.onNext(persistentArray)
         }, onError: { error in
@@ -112,6 +113,7 @@ class DataManager: DataManagerType {
 
       // Get new objects from from the API, add them to persistence then emit them. 
       let networkSub = network
+        .observeOn(SerialDispatchQueueScheduler(qos: .background))
         // TODO: FlatMap into persist so we can maintain the errors
         .do(onSuccess: { newObjectsArray in
           self.persistenceManager.persist(persistentModels: newObjectsArray)
@@ -128,6 +130,5 @@ class DataManager: DataManagerType {
         networkSub.dispose()
       }
     }.debug("fetch", trimOutput: true)
-      .observeOn(SerialDispatchQueueScheduler(qos: .background))
   }
 }
