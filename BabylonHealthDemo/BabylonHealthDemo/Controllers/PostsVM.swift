@@ -5,6 +5,7 @@ import CocoaLumberjackSwift
 // TODO: Localise
 // TODO: Add MARK comments
 // TODO" Check for memory leaks
+// TODO: Add refresh control
 
 class PostsVM {
   private let disposeBag = DisposeBag()

@@ -8,5 +8,5 @@ private let BoldFontName = "\(RegularFontName)-Bold"
 extension UIFont {
   
   static let h1 = UIFont(name: ThinFontName, size: 16)!
-  static let h2 = UIFont(name: ThinFontName, size: 30)!
+  static let h2 = UIFont(name: ThinFontName, size: 10)!
 }

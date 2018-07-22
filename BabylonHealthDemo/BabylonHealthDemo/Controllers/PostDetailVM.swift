@@ -5,23 +5,27 @@ class PostDetailVM {
   private let disposeBag = DisposeBag()
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManagerType
-  private let post: Post
   
   public var alertStream: PublishSubject<AlertContents?>!
-  
   public var title: Driver<String>!
+  public var authorCellTitle: Driver<String>!
   public var author: Driver<String>!
+  public var bodyCellTitle: Driver<String>!
+  public var body: Driver<String>!
+  public var comments: Driver<[Comment]>!
+  public var numberOfCommentsCellTitle: Driver<String>!
+  public var numberOfComments: Driver<Int>!
   
-  private var postsTimeline: BehaviorSubject<[Post]>!
-  public var posts: Driver<[Post]> {
-    return postsTimeline.asDriver(onErrorJustReturn: [])
-  }
+  private var post: Observable<Post>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType, post: Post) {
     self.navigationHandler = navigationHandler
     self.dataManager = dataManager
-    self.post = post
     
+    self.post = dataManager.post(id: post.id)
+      .map { $0.first! }
+      .share(replay: 1, scope: .whileConnected)
+
     setup()
   }
   
@@ -30,12 +34,43 @@ class PostDetailVM {
   }
   
   private func setupObservables() {
-    postsTimeline = BehaviorSubject<[Post]>(value: [])
     alertStream = PublishSubject<AlertContents?>()
     title = Driver.just("Post Detail")
+    
+    authorCellTitle = Driver.just("Author")
     // TODO: Change Single retrievals to not retrieve array
-    author = dataManager.user(id: post.userID)
-      .map { $0.first!.username }
-      .asDriver(onErrorJustReturn: "Author")
+    author = post
+      // Only take the first post, as the userID won't change and taking 1 will prevent making
+      // multiple network requests
+      .take(1)
+      .flatMap { [weak self] postObj -> Observable<[User]> in
+        guard let this = self else { return Observable.empty() }
+        return this.dataManager.user(id: postObj.userID)
+      }
+      .debug("author", trimOutput: true)
+      .map { $0.first! }
+      .map { $0.username }
+      .asDriver(onErrorJustReturn: "")
+    
+    bodyCellTitle = Driver.just("Body")
+    body = post
+      .map { $0.body }
+      .debug("body", trimOutput: true)
+      .asDriver(onErrorJustReturn: "")
+    
+    comments = post
+      // Only take the first post, as the userID won't change and taking 1 will prevent making
+      // multiple network requests
+      .take(1)
+      .flatMap { [weak self] postObj -> Observable<[Comment]> in
+        guard let this = self else { return Observable.empty() }
+        return this.dataManager.comments(on: postObj.id)
+      }
+      .debug("comments", trimOutput: true)
+      .asDriver(onErrorJustReturn: [])
+    
+    numberOfCommentsCellTitle = Driver.just("Number of comments")
+    numberOfComments = comments
+      .map { $0.count }
   }
 }

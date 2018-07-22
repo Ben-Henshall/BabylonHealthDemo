@@ -12,6 +12,7 @@ class PostsVC: UIViewController {
   // TODO: Add second cell type containing a "Load more" button, then loads the next
   // X number of posts.
   private var postsTableView: UITableView!
+  private var hasUpdatedConstraints: Bool = false
   
   init(viewModel: PostsVM) {
     super.init(nibName: nil, bundle: nil)
@@ -50,7 +51,7 @@ class PostsVC: UIViewController {
       .debounce(TableViewRefreshTimer)
       .drive(postsTableView.rx.items) { _, row, post in
         let useAltBackground = row % 2 == 0
-        let cell = TitleDetailTableViewCell()
+        let cell = TitleTableViewCell()
         cell.configure(model: TitleTableViewCellModel(post: post, useAltBackground: useAltBackground))
         return cell
       }
@@ -72,7 +73,7 @@ class PostsVC: UIViewController {
   
   private func addUIElements() {
     postsTableView = UITableView(frame: .zero, style: .plain)
-    postsTableView.register(TitleDetailTableViewCell.self, forCellReuseIdentifier: TitleDetailTableViewCell.reuseIdentifier)
+    postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.reuseIdentifier)
     view.addSubview(postsTableView)
   }
   
@@ -83,10 +84,12 @@ class PostsVC: UIViewController {
   
   override func updateViewConstraints() {
     super.updateViewConstraints()
-    postsTableView.translatesAutoresizingMaskIntoConstraints = false
-    postsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-    postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    postsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-    postsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+    if !hasUpdatedConstraints {
+      postsTableView.translatesAutoresizingMaskIntoConstraints = false
+      postsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+      postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+      postsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+      postsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+    }
   }
 }
