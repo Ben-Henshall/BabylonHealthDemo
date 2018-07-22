@@ -1,5 +1,15 @@
 import UIKit
 
+struct TitleTableViewCellModel {
+  let title: String
+  let useAltBackground: Bool
+  
+  init(post: Post, useAltBackground: Bool) {
+    title = post.title
+    self.useAltBackground = useAltBackground
+  }
+}
+
 class TitleTableViewCell: UITableViewCell, Reusable {
 
   private var didSetupConstraints: Bool = false
@@ -53,15 +63,5 @@ class TitleTableViewCell: UITableViewCell, Reusable {
       titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
       titleLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -24).isActive = true
     }
-  }
-}
-
-struct TitleTableViewCellModel {
-  let title: String
-  let useAltBackground: Bool
-  
-  init(post: Post, useAltBackground: Bool) {
-    title = post.title
-    self.useAltBackground = useAltBackground
   }
 }

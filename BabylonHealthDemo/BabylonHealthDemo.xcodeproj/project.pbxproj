@@ -259,6 +259,7 @@
 				132AEE0A21053ADB000DE6FA /* NetworkService.swift */,
 				132AEE0C21053B25000DE6FA /* DataManagerType.swift */,
 				132AEE0E21053B95000DE6FA /* PersistenceManager.swift */,
+				13970EDD20FD0C5700C748DC /* NavigationHandler.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -303,7 +304,6 @@
 			isa = PBXGroup;
 			children = (
 				13970EE020FD0EA100C748DC /* Scene.swift */,
-				13970EDD20FD0C5700C748DC /* NavigationHandler.swift */,
 				13970EDB20FD08C900C748DC /* SceneCoordinator.swift */,
 				13970EE520FD12B200C748DC /* SceneTransitionType.swift */,
 				13970EE720FD143D00C748DC /* Scene+ViewController.swift */,

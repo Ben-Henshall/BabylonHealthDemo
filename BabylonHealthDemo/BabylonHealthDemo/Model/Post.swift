@@ -34,7 +34,7 @@ struct Post: InternalModel {
 }
 
 extension Post: Equatable {
-  public static func ==(lhs: Post, rhs: Post) -> Bool {
+  public static func == (lhs: Post, rhs: Post) -> Bool {
     return lhs.id == rhs.id
   }
 }

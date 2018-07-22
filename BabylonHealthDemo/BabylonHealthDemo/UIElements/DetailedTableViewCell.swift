@@ -1,5 +1,11 @@
 import UIKit
 
+struct DetailedTableViewCellModel {
+  let title: String
+  let detail: String
+  let useLargeDetail: Bool
+}
+
 class DetailedTitleTableViewCell: UITableViewCell, Reusable {
   
   private var didSetupConstraints: Bool = false
@@ -80,10 +86,4 @@ class DetailedTitleTableViewCell: UITableViewCell, Reusable {
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
   }
-}
-
-struct DetailedTableViewCellModel {
-  let title: String
-  let detail: String
-  let useLargeDetail: Bool
 }

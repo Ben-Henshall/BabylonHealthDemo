@@ -3,7 +3,7 @@ import RealmSwift
 import RxSwift
 import RxRealm
 
-class APIService: NetworkService {
+class APIService {
   
   fileprivate enum Endpoint: String {
     case posts
@@ -25,6 +25,28 @@ class APIService: NetworkService {
     case userID = "userId"
   }
   
+  // Generic method to request, parse and emit data from a given endpoint
+  private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
+    return Observable.just(endpoint)
+      .map { $0.url }
+      .map { url -> URLComponents in
+        var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        comps.queryItems = parameters.map { URLQueryItem(name: $0.key.rawValue, value: $0.value) }
+        return comps
+      }
+      .map { $0.url! }
+      .map { URLRequest(url: $0) }
+      .flatMap { URLSession.shared.rx.response(request: $0) }
+      // TODO: check response for error
+      .map { _, data in
+        return try JSONDecoder().decode(Model.self, from: data)
+      }
+      .take(1)
+      .asSingle()
+  }
+}
+
+extension APIService: NetworkService {
   // MARK: Post Fetching
   func posts() -> Single<[Post]> {
     return request(endpoint: .posts)
@@ -53,25 +75,5 @@ class APIService: NetworkService {
   }
   func comments(on postID: Int64) -> Single<[Comment]> {
     return request(endpoint: .comments, parameters: [.postID: "\(postID)"])
-  }
-  
-  // Generic method to request, parse and emit data from a given endpoint
-  private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
-    return Observable.just(endpoint)
-      .map { $0.url }
-      .map { url -> URLComponents in
-        var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        comps.queryItems = parameters.map { URLQueryItem(name: $0.key.rawValue, value: $0.value) }
-        return comps
-      }
-      .map { $0.url! }
-      .map { URLRequest(url: $0) }
-      .flatMap { URLSession.shared.rx.response(request: $0) }
-      // TODO: check response for error
-      .map { response, data in
-        return try JSONDecoder().decode(Model.self, from: data)
-      }
-      .take(1)
-      .asSingle()
   }
 }
