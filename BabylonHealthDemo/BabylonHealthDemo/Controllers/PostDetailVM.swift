@@ -6,6 +6,9 @@ class PostDetailVM {
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManagerType
   
+  private var post: Observable<Post>!
+
+  // MARK: - Output
   public var alertStream: PublishSubject<AlertContents?>!
   public var title: Driver<String>!
   public var authorCellTitle: Driver<String>!
@@ -16,8 +19,6 @@ class PostDetailVM {
   public var numberOfCommentsCellTitle: Driver<String>!
   public var numberOfComments: Driver<Int>!
   
-  private var post: Observable<Post>!
-
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType, post: Post) {
     self.navigationHandler = navigationHandler
     self.dataManager = dataManager
@@ -25,15 +26,6 @@ class PostDetailVM {
     self.post = dataManager.post(id: post.id)
       .map { $0.first! }
       .share(replay: 1, scope: .whileConnected)
-
-    // Subscription to kick off networking
-    self.post
-      .do(onError: { [weak self] error in
-        // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
-      })
-      .subscribe()
-      .disposed(by: disposeBag)
     
     setup()
   }
@@ -60,7 +52,7 @@ class PostDetailVM {
         // TODO: Implement user-friendly error codes
         self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
-      .filter { !$0.isEmpty}
+      .filter { !$0.isEmpty }
       .map { $0.first! }
       .map { $0.username }
       .asDriver(onErrorJustReturn: "")
@@ -87,5 +79,14 @@ class PostDetailVM {
     numberOfCommentsCellTitle = Driver.just(NSLocalizedString("post_detail_screen_num_of_comments", comment: "Number of comments"))
     numberOfComments = comments
       .map { $0.count }
+    
+    // Subscription to kick off networking
+    self.post
+      .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
+        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
+      })
+      .subscribe()
+      .disposed(by: disposeBag)
   }
 }
