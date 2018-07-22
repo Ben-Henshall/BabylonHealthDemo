@@ -15,6 +15,10 @@
 		132BFDC22103D504003D327E /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC12103D504003D327E /* UIColor+Styles.swift */; };
 		132BFDC42103DA92003D327E /* UIFont+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC32103DA92003D327E /* UIFont+Styles.swift */; };
 		132BFDC82104DC9C003D327E /* DetailedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC72104DC9C003D327E /* DetailedTableViewCell.swift */; };
+		132BFDCB21050F42003D327E /* PostsVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDCA21050F42003D327E /* PostsVMTests.swift */; };
+		132BFDCD2105105A003D327E /* MockDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDCC2105105A003D327E /* MockDataManager.swift */; };
+		132BFDD021051898003D327E /* RxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 132BFDCF21051898003D327E /* RxBlocking.framework */; };
+		132BFDD221051898003D327E /* RxTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 132BFDD121051898003D327E /* RxTest.framework */; };
 		133827FF2103D12C0005B4D8 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133827FE2103D12C0005B4D8 /* Reusable.swift */; };
 		133BFCC9210259E4008FC219 /* InternalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133BFCC8210259E4008FC219 /* InternalModel.swift */; };
 		133CBA9820FF80C200A5F2FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CBA9720FF80C200A5F2FE /* User.swift */; };
@@ -99,6 +103,10 @@
 		132BFDC12103D504003D327E /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
 		132BFDC32103DA92003D327E /* UIFont+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Styles.swift"; sourceTree = "<group>"; };
 		132BFDC72104DC9C003D327E /* DetailedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedTableViewCell.swift; sourceTree = "<group>"; };
+		132BFDCA21050F42003D327E /* PostsVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsVMTests.swift; sourceTree = "<group>"; };
+		132BFDCC2105105A003D327E /* MockDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataManager.swift; sourceTree = "<group>"; };
+		132BFDCF21051898003D327E /* RxBlocking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		132BFDD121051898003D327E /* RxTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		133827FE2103D12C0005B4D8 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		133BFCC8210259E4008FC219 /* InternalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalModel.swift; sourceTree = "<group>"; };
 		133CBA9720FF80C200A5F2FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -152,6 +160,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				132BFDD021051898003D327E /* RxBlocking.framework in Frameworks */,
+				132BFDD221051898003D327E /* RxTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +181,7 @@
 				13970EC520FCFF8300C748DC /* Realm.framework */,
 				13970ECE20FD011F00C748DC /* CocoaLumberjackSwift.framework */,
 				13970ECB20FD011F00C748DC /* CocoaLumberjack.framework */,
+				132BFDCE21051898003D327E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -206,6 +217,7 @@
 				13EE153920FE4ABD008CE979 /* Extensions */,
 				13EE153620FE47C4008CE979 /* Mocks */,
 				13EE153320FE471F008CE979 /* Navigation */,
+				132BFDC921050F32003D327E /* Controllers */,
 				1324ECF120FCF5F200D251E6 /* Info.plist */,
 			);
 			path = BabylonHealthDemoTests;
@@ -217,6 +229,23 @@
 				13251B4721028EFF0028454B /* RealmErrors.swift */,
 			);
 			path = Errors;
+			sourceTree = "<group>";
+		};
+		132BFDC921050F32003D327E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				132BFDCA21050F42003D327E /* PostsVMTests.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		132BFDCE21051898003D327E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				132BFDCF21051898003D327E /* RxBlocking.framework */,
+				132BFDD121051898003D327E /* RxTest.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		133CBA9D20FF9CDD00A5F2FE /* UIElements */ = {
@@ -287,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */,
+				132BFDCC2105105A003D327E /* MockDataManager.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -466,6 +496,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				132BFDCB21050F42003D327E /* PostsVMTests.swift in Sources */,
+				132BFDCD2105105A003D327E /* MockDataManager.swift in Sources */,
 				13EE153820FE47D0008CE979 /* MockNavigationHandler.swift in Sources */,
 				13EE153B20FE4ADA008CE979 /* ActualViewControllerTests.swift in Sources */,
 				13EE153520FE4733008CE979 /* Scene+ViewControllerTests.swift in Sources */,
