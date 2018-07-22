@@ -15,6 +15,8 @@ extension Scene {
       return viewModel
     case .postsEmbedded(let viewModel):
       return viewModel
+    case .postDetail(let viewModel):
+      return viewModel
     }
   }
 }

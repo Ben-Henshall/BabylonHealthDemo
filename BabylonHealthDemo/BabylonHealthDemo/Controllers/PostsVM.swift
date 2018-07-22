@@ -5,12 +5,11 @@ import CocoaLumberjackSwift
 // TODO: Localise
 // TODO: Add MARK comments
 // TODO" Check for memory leaks
-// TODO: Add refresh control
 
 class PostsVM {
   private let disposeBag = DisposeBag()
-  private let navigationHandler: NavigationHandler
-  private let dataManager: DataManagerType
+  internal let navigationHandler: NavigationHandler
+  internal let dataManager: DataManagerType
   
   public var alertStream: BehaviorSubject<AlertContents?>!
 
@@ -18,12 +17,12 @@ class PostsVM {
   
   public var pullNewData: PublishSubject<Void>!
   
+  public var postSelected: PublishSubject<Post>!
+
   private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
-  
-  public var postSelected: PublishSubject<Post>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType) {
     self.navigationHandler = navigationHandler
@@ -34,7 +33,6 @@ class PostsVM {
   
   private func setup() {
     setupObservables()
-    //pullNewData()
   }
   
   private func setupObservables() {
