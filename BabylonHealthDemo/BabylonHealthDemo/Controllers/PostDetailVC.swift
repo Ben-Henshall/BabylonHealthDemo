@@ -25,8 +25,8 @@ class PostDetailVC: UIViewController {
   private func setup() {
     addUIElements()
     setupStyling()
-    setupConstraints()
     bindViewModel()
+    updateViewConstraints()
   }
   
   func bindViewModel() {
@@ -37,13 +37,18 @@ class PostDetailVC: UIViewController {
     centerLabel = UILabel()
     centerLabel.text = "Center"
     view.addSubview(centerLabel)
+    
+    viewModel.title
+      .drive(rx.title)
+      .disposed(by: disposeBag)
   }
   
   private func setupStyling() {
     view.backgroundColor = .white
   }
   
-  private func setupConstraints() {
+  override func updateViewConstraints() {
+    super.updateViewConstraints()
     centerLabel.translatesAutoresizingMaskIntoConstraints = false
     centerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     centerLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true

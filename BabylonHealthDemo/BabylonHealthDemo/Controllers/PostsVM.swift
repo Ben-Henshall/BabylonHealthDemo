@@ -3,6 +3,8 @@ import RxCocoa
 import CocoaLumberjackSwift
 
 // TODO: Localise
+// TODO: Add MARK comments
+// TODO" Check for memory leaks
 
 class PostsVM {
   private let disposeBag = DisposeBag()
@@ -10,6 +12,8 @@ class PostsVM {
   private let dataManager: DataManagerType
   
   public var alertStream: PublishSubject<AlertContents?>!
+
+  public var title: Driver<String>!
   
   private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
@@ -35,10 +39,12 @@ class PostsVM {
     alertStream = PublishSubject<AlertContents?>()
     postSelected = PublishSubject<Post>()
 
+    title = Driver.just("Posts")
+    
     postSelected
       .subscribe(onNext: { [weak self] post in
         guard let this = self else { DDLogError("Attempted to transition to PostDetail when does not exist"); return }
-        let viewModel = PostDetailVM(navigationHandler: this.navigationHandler, dataManager: this.dataManager, userID: post.userID)
+        let viewModel = PostDetailVM(navigationHandler: this.navigationHandler, dataManager: this.dataManager, post: post)
         this.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
       })
       .disposed(by: disposeBag)

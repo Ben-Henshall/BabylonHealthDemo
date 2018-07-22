@@ -2,7 +2,6 @@ import UIKit
 import CocoaLumberjackSwift
 import RxSwift
 
-private let TitleCellReuseIdentifier: String = "TitleCellReuseIdentifier"
 private let TableViewRefreshTimer: RxTimeInterval = 0.2
 
 class PostsVC: UIViewController {
@@ -23,6 +22,13 @@ class PostsVC: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    postsTableView.indexPathsForSelectedRows?.forEach {
+      postsTableView.deselectRow(at: $0, animated: true)
+    }
+  }
+  
   override func loadView() {
     super.loadView()
     setup()
@@ -31,16 +37,21 @@ class PostsVC: UIViewController {
   private func setup() {
     addUIElements()
     setupStyling()
-    setupConstraints()
     bindViewModel()
+    updateViewConstraints()
   }
   
   func bindViewModel() {
+    viewModel.title
+      .drive(rx.title)
+      .disposed(by: disposeBag)
+    
     viewModel.posts
       .debounce(TableViewRefreshTimer)
-      .drive(postsTableView.rx.items) { _, _, post in
-        let cell = TitleTableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: TitleCellReuseIdentifier)
-        cell.configure(model: PostTitleTableViewCellModel(post: post))
+      .drive(postsTableView.rx.items) { _, row, post in
+        let useAltBackground = row % 2 == 0
+        let cell = TitleDetailTableViewCell()
+        cell.configure(model: TitleTableViewCellModel(post: post, useAltBackground: useAltBackground))
         return cell
       }
       .disposed(by: disposeBag)
@@ -61,15 +72,17 @@ class PostsVC: UIViewController {
   
   private func addUIElements() {
     postsTableView = UITableView(frame: .zero, style: .plain)
-    postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleCellReuseIdentifier)
+    postsTableView.register(TitleDetailTableViewCell.self, forCellReuseIdentifier: TitleDetailTableViewCell.reuseIdentifier)
     view.addSubview(postsTableView)
   }
   
   private func setupStyling() {
+    postsTableView.separatorStyle = .none
     view.backgroundColor = .white
   }
   
-  private func setupConstraints() {
+  override func updateViewConstraints() {
+    super.updateViewConstraints()
     postsTableView.translatesAutoresizingMaskIntoConstraints = false
     postsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
     postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
