@@ -34,19 +34,19 @@ class PostDetailVC: UIViewController {
     let authorCell = viewModel.author
       .filter { !$0.isEmpty }
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
-        return DetailedTableViewCellModel(title: cellTitle, detail: detail)
+        return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
     
     let bodyCell = viewModel.body
       .filter { !$0.isEmpty }
       .withLatestFrom(viewModel.bodyCellTitle) { detail, cellTitle in
-        return DetailedTableViewCellModel(title: cellTitle, detail: detail)
+        return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: false)
       }
     
     let numberOfCommentsCell = viewModel.numberOfComments
       .map { "\($0)" }
       .withLatestFrom(viewModel.numberOfCommentsCellTitle) { detail, cellTitle in
-        return DetailedTableViewCellModel(title: cellTitle, detail: detail)
+        return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
 
     let latest = Driver.combineLatest(authorCell, bodyCell, numberOfCommentsCell) {
@@ -64,12 +64,14 @@ class PostDetailVC: UIViewController {
   
   private func addUIElements() {
     tableView = UITableView(frame: .zero, style: .plain)
-    tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.reuseIdentifier)
+    tableView.register(DetailedTitleTableViewCell.self, forCellReuseIdentifier: DetailedTitleTableViewCell.reuseIdentifier)
     view.addSubview(tableView)
   }
   
   private func setupStyling() {
     tableView.separatorStyle = .none
+    tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.allowsSelection = false
     view.backgroundColor = .white
   }
   
