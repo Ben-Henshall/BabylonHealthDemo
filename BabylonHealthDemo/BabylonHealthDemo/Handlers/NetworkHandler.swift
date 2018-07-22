@@ -26,6 +26,7 @@ class APIService {
   }
   
   // Generic method to request, parse and emit data from a given endpoint
+  // TODO: Add retry mechanism using timer to retry every x seconds up to Y number of times
   private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
     return Observable.just(endpoint)
       .map { $0.url }
