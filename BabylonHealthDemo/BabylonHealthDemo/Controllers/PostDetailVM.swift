@@ -53,8 +53,8 @@ class PostDetailVM {
       // multiple network requests
       .take(1)
       .flatMap { [weak self] postObj -> Observable<[User]> in
-        guard let this = self else { return Observable.empty() }
-        return this.dataManager.user(id: postObj.userID)
+        guard let strongSelf = self else { return Observable.empty() }
+        return strongSelf.dataManager.user(id: postObj.userID)
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
@@ -75,8 +75,8 @@ class PostDetailVM {
       // multiple network requests
       .take(1)
       .flatMap { [weak self] postObj -> Observable<[Comment]> in
-        guard let this = self else { return Observable.empty() }
-        return this.dataManager.comments(on: postObj.id)
+        guard let strongSelf = self else { return Observable.empty() }
+        return strongSelf.dataManager.comments(on: postObj.id)
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes

@@ -45,16 +45,16 @@ class PostsVM {
     
     postSelected
       .subscribe(onNext: { [weak self] post in
-        guard let this = self else { DDLogError("Attempted to transition to PostDetail when does not exist"); return }
-        let viewModel = PostDetailVM(navigationHandler: this.navigationHandler, dataManager: this.dataManager, post: post)
-        this.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
+        guard let strongSelf = self else { DDLogError("Attempted to transition to PostDetail when does not exist"); return }
+        let viewModel = PostDetailVM(navigationHandler: strongSelf.navigationHandler, dataManager: strongSelf.dataManager, post: post)
+        strongSelf.navigationHandler.transition(to: .postDetail(viewModel), type: .push, animated: true)
       })
       .disposed(by: disposeBag)
     
     pullNewData
       .flatMap { [weak self] _ -> Observable<[Post]> in
-        guard let this = self else { return Observable.empty() }
-        return this.dataManager.posts()
+        guard let strongSelf = self else { return Observable.empty() }
+        return strongSelf.dataManager.posts()
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes

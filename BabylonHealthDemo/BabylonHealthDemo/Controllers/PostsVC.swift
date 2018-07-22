@@ -52,8 +52,8 @@ class PostsVC: UIViewController {
     viewModel.posts
       .debounce(TableViewRefreshTimer)
       .do(onNext: { [weak self] _ in
-        guard let this = self else { return }
-        this.refreshControl.endRefreshing()
+        guard let strongSelf = self else { return }
+        strongSelf.refreshControl.endRefreshing()
       })
       .drive(postsTableView.rx.items) { _, row, post in
         let useAltBackground = row % 2 == 0
@@ -66,8 +66,8 @@ class PostsVC: UIViewController {
     viewModel.alertStream
       .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in
-        guard let this = self, let contents = contents else { return Completable.empty() }
-        return this.alert(contents: contents)
+        guard let strongSelf = self, let contents = contents else { return Completable.empty() }
+        return strongSelf.alert(contents: contents)
       }
       .subscribe()
       .disposed(by: disposeBag)

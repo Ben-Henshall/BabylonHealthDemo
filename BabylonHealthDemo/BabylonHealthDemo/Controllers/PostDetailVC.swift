@@ -78,8 +78,8 @@ class PostDetailVC: UIViewController {
     viewModel.alertStream
       .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in
-        guard let this = self, let contents = contents else { return Completable.empty() }
-        return this.alert(contents: contents)
+        guard let strongSelf = self, let contents = contents else { return Completable.empty() }
+        return strongSelf.alert(contents: contents)
       }
       .subscribe()
       .disposed(by: disposeBag)
