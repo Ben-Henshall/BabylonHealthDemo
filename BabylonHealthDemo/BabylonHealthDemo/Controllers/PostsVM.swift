@@ -12,7 +12,7 @@ class PostsVM {
   private let navigationHandler: NavigationHandler
   private let dataManager: DataManagerType
   
-  public var alertStream: PublishSubject<AlertContents?>!
+  public var alertStream: BehaviorSubject<AlertContents?>!
 
   public var title: Driver<String>!
   
@@ -37,7 +37,7 @@ class PostsVM {
   
   private func setupObservables() {
     postsTimeline = BehaviorSubject<[Post]>(value: [])
-    alertStream = PublishSubject<AlertContents?>()
+    alertStream = BehaviorSubject<AlertContents?>(value: nil)
     postSelected = PublishSubject<Post>()
 
     title = Driver.just("Posts")

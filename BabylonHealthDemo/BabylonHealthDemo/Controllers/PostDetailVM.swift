@@ -28,6 +28,10 @@ class PostDetailVM {
 
     // Subscription to kick off networking
     self.post
+      .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
+        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+      })
       .subscribe()
       .disposed(by: disposeBag)
     
@@ -52,6 +56,11 @@ class PostDetailVM {
         guard let this = self else { return Observable.empty() }
         return this.dataManager.user(id: postObj.userID)
       }
+      .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
+        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+      })
+      .filter { !$0.isEmpty}
       .debug("author", trimOutput: true)
       .map { $0.first! }
       .map { $0.username }
@@ -60,7 +69,6 @@ class PostDetailVM {
     bodyCellTitle = Driver.just("Body")
     body = post
       .map { $0.body }
-      .debug("body", trimOutput: true)
       .asDriver(onErrorJustReturn: "")
     
     comments = post
@@ -71,7 +79,10 @@ class PostDetailVM {
         guard let this = self else { return Observable.empty() }
         return this.dataManager.comments(on: postObj.id)
       }
-      .debug("comments", trimOutput: true)
+      .do(onError: { [weak self] error in
+        // TODO: Implement user-friendly error codes
+        self?.alertStream.onNext(AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil))
+      })
       .asDriver(onErrorJustReturn: [])
     
     numberOfCommentsCellTitle = Driver.just("Number of comments")

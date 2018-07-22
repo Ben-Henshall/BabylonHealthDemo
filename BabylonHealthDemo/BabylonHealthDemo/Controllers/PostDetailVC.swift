@@ -8,6 +8,7 @@ class PostDetailVC: UIViewController {
   var viewModel: PostDetailVM!
   
   private var tableView: UITableView!
+  private var activityIndicator: UIActivityIndicatorView!
 
   init(viewModel: PostDetailVM) {
     super.init(nibName: nil, bundle: nil)
@@ -36,6 +37,7 @@ class PostDetailVC: UIViewController {
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
+    .debug("authorCell", trimOutput: true)
     
     let bodyCell = viewModel.body
       .filter { !$0.isEmpty }
@@ -49,16 +51,39 @@ class PostDetailVC: UIViewController {
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
 
-    let latest = Driver.combineLatest(authorCell, bodyCell, numberOfCommentsCell) {
-      return [$0, $1, $2]
-    }
+    let cells = [authorCell, bodyCell, numberOfCommentsCell]
+    
+    let latest = Driver.combineLatest(cells)
     
     latest
+      .debug("latest", trimOutput: true)
       .drive(tableView.rx.items) { _, _, model in
         let cell = DetailedTitleTableViewCell()
         cell.configure(model: model)
         return cell
       }
+      .disposed(by: disposeBag)
+    
+    let hasLoaded = latest
+      .map { $0.count == cells.count}
+      .filter { $0 }
+    
+    hasLoaded
+      .drive(activityIndicator.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    hasLoaded
+      .map { !$0 }
+      .drive(activityIndicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    viewModel.alertStream
+      .filter { $0 != nil }
+      .flatMap { [weak self] contents -> Completable in
+        guard let this = self, let contents = contents else { return Completable.empty() }
+        return this.alert(contents: contents)
+      }
+      .subscribe()
       .disposed(by: disposeBag)
   }
   
@@ -66,13 +91,20 @@ class PostDetailVC: UIViewController {
     tableView = UITableView(frame: .zero, style: .plain)
     tableView.register(DetailedTitleTableViewCell.self, forCellReuseIdentifier: DetailedTitleTableViewCell.reuseIdentifier)
     view.addSubview(tableView)
+    
+    activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    activityIndicator.startAnimating()
+    view.addSubview(activityIndicator)
   }
   
   private func setupStyling() {
     tableView.separatorStyle = .none
     tableView.rowHeight = UITableViewAutomaticDimension
     tableView.allowsSelection = false
+    
     view.backgroundColor = .white
+    
+    activityIndicator.color = .titleBlue
   }
   
   override func updateViewConstraints() {
@@ -82,5 +114,9 @@ class PostDetailVC: UIViewController {
     tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
     tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+    
+    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+    activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
   }
 }

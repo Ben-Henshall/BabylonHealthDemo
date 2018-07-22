@@ -12,6 +12,7 @@ class PostsVC: UIViewController {
   // TODO: Add second cell type containing a "Load more" button, then loads the next
   // X number of posts.
   private var postsTableView: UITableView!
+  private var activityIndicator: UIActivityIndicatorView!
   private var hasUpdatedConstraints: Bool = false
   
   init(viewModel: PostsVM) {
@@ -69,17 +70,35 @@ class PostsVC: UIViewController {
     postsTableView.rx.modelSelected(Post.self)
       .subscribe(viewModel.postSelected)
       .disposed(by: disposeBag)
+    
+    let hasLoaded = viewModel.posts
+      .map { !$0.isEmpty }
+      .filter { $0 }
+    
+    hasLoaded
+      .drive(activityIndicator.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    hasLoaded
+      .map { !$0 }
+      .drive(activityIndicator.rx.isAnimating)
+      .disposed(by: disposeBag)
   }
   
   private func addUIElements() {
     postsTableView = UITableView(frame: .zero, style: .plain)
     postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.reuseIdentifier)
     view.addSubview(postsTableView)
+    
+    activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    activityIndicator.startAnimating()
+    view.addSubview(activityIndicator)
   }
   
   private func setupStyling() {
     postsTableView.separatorStyle = .none
     view.backgroundColor = .white
+    activityIndicator.color = .titleBlue
   }
   
   override func updateViewConstraints() {
@@ -90,6 +109,10 @@ class PostsVC: UIViewController {
       postsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
       postsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
       postsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      
+      activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+      activityIndicator.centerXAnchor.constraint(equalTo: postsTableView.centerXAnchor).isActive = true
+      activityIndicator.centerYAnchor.constraint(equalTo: postsTableView.centerYAnchor).isActive = true
     }
   }
 }
