@@ -1,6 +1,9 @@
 # babylon-health-demo
 
-https://github.com/Babylonpartners/iOS-Interview-Demo/blob/master/demo.md
+[Technical demo spec can be found here](https://github.com/Babylonpartners/iOS-Interview-Demo/blob/master/demo.md)
+
+[A git repo containing this project can be found here] 
+(https://github.com/Ben-Henshall/BabylonHealthDemo)
 
 ## Installation
 
@@ -42,3 +45,6 @@ Pulls data from the JSONPlaceholder API and parses into model objects.
 Due to time constraints, I have been unable to add as many tests as I would have liked.  
 I have included a few unit tests for PostVM, demonstrating how I would unit test using TestSchedulers and RxBlocking.  
 I have also included basic mock implementations for DataManager and NavigationHandler, which can be used in tests to simulate live data flow.
+
+## TODOs
+All TODO comments left in the code were due to time constraints.
