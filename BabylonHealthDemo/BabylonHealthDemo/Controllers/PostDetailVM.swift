@@ -47,7 +47,7 @@ class PostDetailVM {
     title = Driver.just(NSLocalizedString("post_detail_screen_title", comment: "Post Detail"))
     
     authorCellTitle = Driver.just(NSLocalizedString("post_detail_screen_author", comment: "Author"))
-    // TODO: Change Single retrievals to not retrieve array
+
     author = post
       // Only take the first post, as the userID won't change and taking 1 will prevent making
       // multiple network requests

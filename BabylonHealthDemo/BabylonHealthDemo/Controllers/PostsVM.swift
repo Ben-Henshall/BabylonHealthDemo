@@ -2,10 +2,6 @@ import RxSwift
 import RxCocoa
 import CocoaLumberjackSwift
 
-// TODO: Localise
-// TODO: Add MARK comments
-// TODO" Check for memory leaks
-
 class PostsVM {
   private let disposeBag = DisposeBag()
   internal let navigationHandler: NavigationHandler
