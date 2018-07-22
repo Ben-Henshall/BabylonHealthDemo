@@ -50,7 +50,7 @@ class TitleTableViewCell: UITableViewCell, Reusable {
   }
   
   private func setupStyling() {
-    titleLabel.font = .h1
+    titleLabel.font = .h3
     titleLabel.textColor = .titleBlue
   }
   
