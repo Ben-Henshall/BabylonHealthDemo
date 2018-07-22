@@ -129,6 +129,6 @@ class DataManager: DataManagerType {
         persistenceSub.dispose()
         networkSub.dispose()
       }
-    }.debug("fetch", trimOutput: true)
+    }
   }
 }

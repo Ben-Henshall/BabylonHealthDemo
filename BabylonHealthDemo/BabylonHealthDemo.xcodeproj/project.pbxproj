@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		1324ECDB20FCF5F000D251E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1324ECDA20FCF5F000D251E6 /* AppDelegate.swift */; };
 		1324ECDD20FCF5F000D251E6 /* PostsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1324ECDC20FCF5F000D251E6 /* PostsVC.swift */; };
-		1324ECE220FCF5F200D251E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1324ECE120FCF5F200D251E6 /* Assets.xcassets */; };
-		1324ECE520FCF5F200D251E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1324ECE320FCF5F200D251E6 /* LaunchScreen.storyboard */; };
 		13251B4821028EFF0028454B /* RealmErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13251B4721028EFF0028454B /* RealmErrors.swift */; };
+		132AEDFA21052FB3000DE6FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 132AEDF721052FB2000DE6FA /* Assets.xcassets */; };
+		132AEDFB21052FB3000DE6FA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 132AEDF821052FB2000DE6FA /* Info.plist */; };
+		132AEDFE21052FCB000DE6FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 132AEDFC21052FCB000DE6FA /* LaunchScreen.storyboard */; };
 		132BFDC22103D504003D327E /* UIColor+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC12103D504003D327E /* UIColor+Styles.swift */; };
 		132BFDC42103DA92003D327E /* UIFont+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC32103DA92003D327E /* UIFont+Styles.swift */; };
 		132BFDC82104DC9C003D327E /* DetailedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132BFDC72104DC9C003D327E /* DetailedTableViewCell.swift */; };
@@ -94,12 +95,12 @@
 		1324ECD720FCF5F000D251E6 /* BabylonHealthDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabylonHealthDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1324ECDA20FCF5F000D251E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1324ECDC20FCF5F000D251E6 /* PostsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsVC.swift; sourceTree = "<group>"; };
-		1324ECE120FCF5F200D251E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1324ECE420FCF5F200D251E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		1324ECE620FCF5F200D251E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1324ECEB20FCF5F200D251E6 /* BabylonHealthDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BabylonHealthDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1324ECF120FCF5F200D251E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13251B4721028EFF0028454B /* RealmErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmErrors.swift; sourceTree = "<group>"; };
+		132AEDF721052FB2000DE6FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = BabylonHealthDemo/Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		132AEDF821052FB2000DE6FA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BabylonHealthDemo/Resources/Info.plist; sourceTree = SOURCE_ROOT; };
+		132AEDFD21052FCB000DE6FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = BabylonHealthDemo/Resources/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		132BFDC12103D504003D327E /* UIColor+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Styles.swift"; sourceTree = "<group>"; };
 		132BFDC32103DA92003D327E /* UIFont+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Styles.swift"; sourceTree = "<group>"; };
 		132BFDC72104DC9C003D327E /* DetailedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedTableViewCell.swift; sourceTree = "<group>"; };
@@ -168,6 +169,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1308B46721052F2D00C6C5FF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				132AEDF721052FB2000DE6FA /* Assets.xcassets */,
+				132AEDFC21052FCB000DE6FA /* LaunchScreen.storyboard */,
+				132AEDF821052FB2000DE6FA /* Info.plist */,
+			);
+			name = Resources;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		1324ECCE20FCF5F000D251E6 = {
 			isa = PBXGroup;
 			children = (
@@ -204,9 +216,7 @@
 				13970EEB20FD2C6500C748DC /* Extensions */,
 				133CBA9D20FF9CDD00A5F2FE /* UIElements */,
 				13970EE220FD0EF000C748DC /* Controllers */,
-				1324ECE120FCF5F200D251E6 /* Assets.xcassets */,
-				1324ECE320FCF5F200D251E6 /* LaunchScreen.storyboard */,
-				1324ECE620FCF5F200D251E6 /* Info.plist */,
+				1308B46721052F2D00C6C5FF /* Resources */,
 			);
 			path = BabylonHealthDemo;
 			sourceTree = "<group>";
@@ -425,8 +435,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1324ECE520FCF5F200D251E6 /* LaunchScreen.storyboard in Resources */,
-				1324ECE220FCF5F200D251E6 /* Assets.xcassets in Resources */,
+				132AEDFE21052FCB000DE6FA /* LaunchScreen.storyboard in Resources */,
+				132AEDFA21052FB3000DE6FA /* Assets.xcassets in Resources */,
+				132AEDFB21052FB3000DE6FA /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,10 +526,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1324ECE320FCF5F200D251E6 /* LaunchScreen.storyboard */ = {
+		132AEDFC21052FCB000DE6FA /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1324ECE420FCF5F200D251E6 /* Base */,
+				132AEDFD21052FCB000DE6FA /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -646,7 +657,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24MJ526PQD;
-				INFOPLIST_FILE = BabylonHealthDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BabylonHealthDemo/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -664,7 +675,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24MJ526PQD;
-				INFOPLIST_FILE = BabylonHealthDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BabylonHealthDemo/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

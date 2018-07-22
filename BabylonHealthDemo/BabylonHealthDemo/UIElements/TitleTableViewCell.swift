@@ -65,11 +65,3 @@ struct TitleTableViewCellModel {
     self.useAltBackground = useAltBackground
   }
 }
-
-//class PostTitleTableViewCellModel: TitleTableViewCellModel {
-//  convenience init(post: Post) {
-//    self.init(title: "postID: \(post.id)", body: "userID: \(post.userID)")
-//  }
-//}
-
-

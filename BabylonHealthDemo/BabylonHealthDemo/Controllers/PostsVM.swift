@@ -61,7 +61,6 @@ class PostsVM {
         let alert = AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)
         self?.alertStream.onNext(alert)
       })
-      .debug("pullNewData", trimOutput: true)
       .subscribe(onNext: { [weak self] in
         self?.postsTimeline.onNext($0)
       })
