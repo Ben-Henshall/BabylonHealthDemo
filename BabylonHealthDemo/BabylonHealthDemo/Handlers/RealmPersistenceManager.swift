@@ -62,7 +62,7 @@ protocol PersistenceManagerType {
   /// Adds passed models to persistence
   ///
   /// - Parameter persistentModels: The models to add to persistence
-  func persist<T: InternalModel>(persistentModels: [T])
+  func persist<Model: InternalModel>(persistentModels: [Model])
 }
 
 /// Manages the persistence of data using Realm
@@ -146,7 +146,7 @@ class RealmPersistenceManager: PersistenceManagerType {
   
   // MARK: Saving to persistence
   // TODO: Make this into Observable so we can propagate errors properly
-  func persist<T: InternalModel>(persistentModels: [T]) {
+  func persist<Model: InternalModel>(persistentModels: [Model]) {
     guard let realm = try? Realm() else { DDLogError("Could not access realm database."); return }
     try? realm.write {
       persistentModels.forEach { persistentModel in

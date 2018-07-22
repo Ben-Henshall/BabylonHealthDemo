@@ -112,7 +112,7 @@ class APIService: APIServiceType {
   }
   
   // Generic method to request, parse and emit data from a given endpoint
-  private func request<T: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<T> {
+  private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
     return Observable.just(endpoint)
       .map { $0.url }
       .map { url -> URLComponents in
@@ -125,7 +125,7 @@ class APIService: APIServiceType {
       .flatMap { URLSession.shared.rx.response(request: $0) }
       // TODO: check response for error
       .map { response, data in
-        return try JSONDecoder().decode(T.self, from: data)
+        return try JSONDecoder().decode(Model.self, from: data)
       }
       .take(1)
       .asSingle()

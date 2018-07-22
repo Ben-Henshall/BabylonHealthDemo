@@ -99,7 +99,7 @@ class DataManager: DataManagerType {
     return fetch(persistent: persistenceManager.retrieveComments(on: postID), network: apiService.comments(on: postID))
   }
   
-  private func fetch<T: InternalModel>(persistent: Single<[T]>, network: Single<[T]>) -> Observable<[T]> {
+  private func fetch<Model: InternalModel>(persistent: Single<[Model]>, network: Single<[Model]>) -> Observable<[Model]> {
     return Observable.create { [unowned self] observer in
       
       // Get any persistent objects and emit them
