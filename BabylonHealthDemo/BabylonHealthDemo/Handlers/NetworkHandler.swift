@@ -3,63 +3,7 @@ import RealmSwift
 import RxSwift
 import RxRealm
 
-protocol APIServiceType {
-  
-  // MARK: Post fetching
-  
-  /// Fetches all posts from the API
-  ///
-  /// - Returns: A Single that emits an array of posts then completes
-  func posts() -> Single<[Post]>
-  
-  /// Retrieves X Post objects starting from a given ID
-  ///
-  /// - Parameters:
-  ///   - startingID: The ID of the first post
-  ///   - limit: The number of posts to return
-  /// - Returns: Single that emits posts pulled from an API
-  func posts(startingFrom startingID: Int64, limit: Int64) -> Single<[Post]>
-  
-  /// Fetches a specific post object when given an ID
-  ///
-  /// - Parameter id: The identifier of the post to fetch
-  /// - Returns: A Single emitting an array of size 1, containing the requested post
-  func post(id: Int64) -> Single<[Post]>
-  
-  // MARK: User Fetching
-  
-  /// Fetches all users from the API
-  ///
-  /// - Returns: A Single that emits an array of users then completes
-  func users() -> Single<[User]>
-
-  /// Fetches a specific user object when given an ID
-  ///
-  /// - Parameter id: The identifier of the user to fetch
-  /// - Returns: A Single emitting an array of size 1, containing the requested user
-  func user(id: Int64) -> Single<[User]>
-  
-  // MARK: Comment Fetching
-  
-  /// Fetches all comments from the API
-  ///
-  /// - Returns: A Single that emits an array of comments then completes
-  func comments() -> Single<[Comment]>
-  
-  /// Fetches a specific Comment object when given an ID
-  ///
-  /// - Parameter id: The identifier of the Comment to fetch
-  /// - Returns: A Single emitting an array of size 1, containing the requested Comment
-  func comment(id: Int64) -> Single<[Comment]>
-  
-  /// Fetches all Comments with a matching postID form the API
-  ///
-  /// - Parameter postID: The identifier of the post to fetch comments for
-  /// - Returns: A Single emitting an array of all comments with a matching postID
-  func comments(on postID: Int64) -> Single<[Comment]>
-}
-
-class APIService: APIServiceType {
+class APIService {
   
   fileprivate enum Endpoint: String {
     case posts
@@ -81,6 +25,29 @@ class APIService: APIServiceType {
     case userID = "userId"
   }
   
+  // Generic method to request, parse and emit data from a given endpoint
+  // TODO: Add retry mechanism using timer to retry every x seconds up to Y number of times
+  private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
+    return Observable.just(endpoint)
+      .map { $0.url }
+      .map { url -> URLComponents in
+        var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        comps.queryItems = parameters.map { URLQueryItem(name: $0.key.rawValue, value: $0.value) }
+        return comps
+      }
+      .map { $0.url! }
+      .map { URLRequest(url: $0) }
+      .flatMap { URLSession.shared.rx.response(request: $0) }
+      // TODO: check response for error
+      .map { _, data in
+        return try JSONDecoder().decode(Model.self, from: data)
+      }
+      .take(1)
+      .asSingle()
+  }
+}
+
+extension APIService: NetworkService {
   // MARK: Post Fetching
   func posts() -> Single<[Post]> {
     return request(endpoint: .posts)
@@ -109,25 +76,5 @@ class APIService: APIServiceType {
   }
   func comments(on postID: Int64) -> Single<[Comment]> {
     return request(endpoint: .comments, parameters: [.postID: "\(postID)"])
-  }
-  
-  // Generic method to request, parse and emit data from a given endpoint
-  private func request<T: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<T> {
-    return Observable.just(endpoint)
-      .map { $0.url }
-      .map { url -> URLComponents in
-        var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-        comps.queryItems = parameters.map { URLQueryItem(name: $0.key.rawValue, value: $0.value) }
-        return comps
-      }
-      .map { $0.url! }
-      .map { URLRequest(url: $0) }
-      .flatMap { URLSession.shared.rx.response(request: $0) }
-      // TODO: check response for error
-      .map { response, data in
-        return try JSONDecoder().decode(T.self, from: data)
-      }
-      .take(1)
-      .asSingle()
   }
 }

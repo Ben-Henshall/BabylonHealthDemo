@@ -16,7 +16,7 @@ struct Post: InternalModel {
     case body
   }
   
-  // MARK: InternalModel requirements
+  // MARK: - InternalModel requirements
   var persistentModel: PostPersistence {
     return PostPersistence(post: self)
   }
@@ -34,7 +34,7 @@ struct Post: InternalModel {
 }
 
 extension Post: Equatable {
-  public static func ==(lhs: Post, rhs: Post) -> Bool {
+  public static func == (lhs: Post, rhs: Post) -> Bool {
     return lhs.id == rhs.id
   }
 }

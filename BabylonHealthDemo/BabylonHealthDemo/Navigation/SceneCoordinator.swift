@@ -4,7 +4,7 @@ import CocoaLumberjackSwift
 /// Concrete implementation of NavigationHandler that provides navigation functionality between Scenes
 /// Keeps references to ViewControllers to remove coupling between ViewControllers. ViewControllers are
 /// completely independent of each other.
-class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDelegate {
+class SceneCoordinator: NSObject {
 
   private let window: UIWindow
   private var currentViewController: UIViewController?
@@ -13,7 +13,9 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
     self.window = window
     currentViewController = window.rootViewController
   }
-  
+}
+
+extension SceneCoordinator: NavigationHandler {
   func transition(to scene: Scene, type: SceneTransitionType, animated: Bool) {
     let newVC = scene.viewController()
     
@@ -23,22 +25,22 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
     }
     
     switch type {
-    
-      case .root:
-        currentViewController = newVC.actualViewController
-        window.rootViewController = newVC
       
-      case .push:
-        guard let navigationController = currentViewController?.navigationController else {
-          fatalError("Can't push a view controller without a current navigation controller")
-        }
-        currentViewController = newVC.actualViewController
-        // Safe force unwrap as we set currentViewController above
-        navigationController.pushViewController(currentViewController!, animated: animated)
+    case .root:
+      currentViewController = newVC.actualViewController
+      window.rootViewController = newVC
       
-      case .modal:
-        currentViewController?.navigationController?.present(newVC, animated: animated, completion: nil)
-        currentViewController = newVC.actualViewController
+    case .push:
+      guard let navigationController = currentViewController?.navigationController else {
+        fatalError("Can't push a view controller without a current navigation controller")
+      }
+      currentViewController = newVC.actualViewController
+      // Safe force unwrap as we set currentViewController above
+      navigationController.pushViewController(currentViewController!, animated: animated)
+      
+    case .modal:
+      currentViewController?.navigationController?.present(newVC, animated: animated, completion: nil)
+      currentViewController = newVC.actualViewController
     }
   }
   
@@ -62,7 +64,9 @@ class SceneCoordinator: NSObject, NavigationHandler, UINavigationControllerDeleg
       return
     }
   }
-  
+}
+
+extension SceneCoordinator: UINavigationControllerDelegate {
   func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
     // Update the current ViewController if navigation stack is updated without SceneCoordinator initiating the change.
     // e.g., navigating backwards using the system back button.

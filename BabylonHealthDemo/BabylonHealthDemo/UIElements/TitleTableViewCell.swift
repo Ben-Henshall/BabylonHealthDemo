@@ -1,6 +1,20 @@
 import UIKit
 
-class TitleTableViewCell: UITableViewCell, Reusable {
+struct TitleTableViewCellModel {
+  let title: String
+  let useAltBackground: Bool
+  
+  init(post: Post, useAltBackground: Bool) {
+    self.init(title: post.title, useAltBackground: useAltBackground)
+  }
+  
+  init(title: String, useAltBackground: Bool) {
+    self.title = title
+    self.useAltBackground = useAltBackground
+  }
+}
+
+class TitleTableViewCell: UITableViewCell {
 
   private var didSetupConstraints: Bool = false
   var titleLabel: UILabel!
@@ -40,7 +54,7 @@ class TitleTableViewCell: UITableViewCell, Reusable {
   }
   
   private func setupStyling() {
-    titleLabel.font = .h1
+    titleLabel.font = .h3
     titleLabel.textColor = .titleBlue
   }
   
@@ -56,20 +70,4 @@ class TitleTableViewCell: UITableViewCell, Reusable {
   }
 }
 
-struct TitleTableViewCellModel {
-  let title: String
-  let useAltBackground: Bool
-  
-  init(post: Post, useAltBackground: Bool) {
-    title = post.title
-    self.useAltBackground = useAltBackground
-  }
-}
-
-//class PostTitleTableViewCellModel: TitleTableViewCellModel {
-//  convenience init(post: Post) {
-//    self.init(title: "postID: \(post.id)", body: "userID: \(post.userID)")
-//  }
-//}
-
-
+extension TitleTableViewCell: Reusable { }

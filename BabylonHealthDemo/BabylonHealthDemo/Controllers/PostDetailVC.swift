@@ -9,6 +9,7 @@ class PostDetailVC: UIViewController {
   
   private var tableView: UITableView!
   private var activityIndicator: UIActivityIndicatorView!
+  private var didSetupConstraints: Bool = false
 
   init(viewModel: PostDetailVM) {
     super.init(nibName: nil, bundle: nil)
@@ -37,7 +38,6 @@ class PostDetailVC: UIViewController {
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
-    .debug("authorCell", trimOutput: true)
     
     let bodyCell = viewModel.body
       .filter { !$0.isEmpty }
@@ -56,7 +56,6 @@ class PostDetailVC: UIViewController {
     let latest = Driver.combineLatest(cells)
     
     latest
-      .debug("latest", trimOutput: true)
       .drive(tableView.rx.items) { _, _, model in
         let cell = DetailedTitleTableViewCell()
         cell.configure(model: model)
@@ -80,8 +79,8 @@ class PostDetailVC: UIViewController {
     viewModel.alertStream
       .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in
-        guard let this = self, let contents = contents else { return Completable.empty() }
-        return this.alert(contents: contents)
+        guard let strongSelf = self, let contents = contents else { return Completable.empty() }
+        return strongSelf.alert(contents: contents)
       }
       .subscribe()
       .disposed(by: disposeBag)
@@ -109,14 +108,16 @@ class PostDetailVC: UIViewController {
   
   override func updateViewConstraints() {
     super.updateViewConstraints()
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-    tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-    
-    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-    activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
-    activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    if !didSetupConstraints {
+      tableView.translatesAutoresizingMaskIntoConstraints = false
+      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+      
+      activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+      activityIndicator.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+      activityIndicator.centerYAnchor.constraint(equalTo: tableView.centerYAnchor).isActive = true
+    }
   }
 }

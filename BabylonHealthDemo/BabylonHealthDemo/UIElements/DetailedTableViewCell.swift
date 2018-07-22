@@ -1,6 +1,12 @@
 import UIKit
 
-class DetailedTitleTableViewCell: UITableViewCell, Reusable {
+struct DetailedTableViewCellModel {
+  let title: String
+  let detail: String
+  let useLargeDetail: Bool
+}
+
+class DetailedTitleTableViewCell: UITableViewCell {
   
   private var didSetupConstraints: Bool = false
   var titleLabel: UILabel!
@@ -19,7 +25,7 @@ class DetailedTitleTableViewCell: UITableViewCell, Reusable {
   public func configure(model: DetailedTableViewCellModel) {
     titleLabel?.text = model.title
     detailedLabel.text = model.detail
-    detailedLabel.font = model.useLargeDetail ? .h2 : .h3
+    detailedLabel.font = model.useLargeDetail ? .h1 : .h2
     detailedLabel.textAlignment = model.useLargeDetail ? .center : .left
   }
   
@@ -50,10 +56,10 @@ class DetailedTitleTableViewCell: UITableViewCell, Reusable {
   }
   
   private func setupStyling() {
-    titleLabel.font = .h2
+    titleLabel.font = .h1
     titleLabel.textColor = .titleBlue
     
-    detailedLabel.font = .h3
+    detailedLabel.font = .h2
     detailedLabel.textColor = .pastelBlue
     
     separator.backgroundColor = .titleBlue
@@ -82,8 +88,4 @@ class DetailedTitleTableViewCell: UITableViewCell, Reusable {
   }
 }
 
-struct DetailedTableViewCellModel {
-  let title: String
-  let detail: String
-  let useLargeDetail: Bool
-}
+extension DetailedTitleTableViewCell: Reusable { }
