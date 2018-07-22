@@ -7,13 +7,16 @@ private let TableViewRefreshTimer: RxTimeInterval = 0.2
 class PostsVC: UIViewController {
   private let disposeBag = DisposeBag()
   var viewModel: PostsVM!
+  
   // TODO: Power tableView using RxDatasources to allow better insertion of cells
   // as well as better control of multiple sections
   // TODO: Add second cell type containing a "Load more" button, then loads the next
   // X number of posts.
+  
   private var postsTableView: UITableView!
   private var activityIndicator: UIActivityIndicatorView!
   private var refreshControl: UIRefreshControl!
+  
   private var didSetupConstraints: Bool = false
   
   init(viewModel: PostsVM) {
@@ -27,6 +30,7 @@ class PostsVC: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    // Deselect rows when we navigate back to this VC
     postsTableView.indexPathsForSelectedRows?.forEach {
       postsTableView.deselectRow(at: $0, animated: true)
     }
@@ -50,6 +54,7 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     viewModel.posts
+      // Debounce to prevent quick animations from cached version to live version of data
       .debounce(TableViewRefreshTimer)
       .do(onNext: { [weak self] _ in
         guard let strongSelf = self else { return }

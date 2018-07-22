@@ -7,18 +7,18 @@ class PostsVM {
   internal let navigationHandler: NavigationHandler
   internal let dataManager: DataManagerType
   
+  // MARK: - Output
   public var alertStream: BehaviorSubject<AlertContents?>!
-
   public var title: Driver<String>!
   
-  public var pullNewData: PublishSubject<Void>!
-  
-  public var postSelected: PublishSubject<Post>!
-
   private var postsTimeline: BehaviorSubject<[Post]>!
   public var posts: Driver<[Post]> {
     return postsTimeline.asDriver(onErrorJustReturn: [])
   }
+  
+  // MARK: - Input
+  public var pullNewData: PublishSubject<Void>!
+  public var postSelected: PublishSubject<Post>!
   
   init(navigationHandler: NavigationHandler, dataManager: DataManagerType) {
     self.navigationHandler = navigationHandler
