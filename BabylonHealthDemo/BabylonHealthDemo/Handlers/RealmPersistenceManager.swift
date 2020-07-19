@@ -15,7 +15,7 @@ class RealmPersistenceManager {
     
     return Observable.array(from: posts)
       // Map to non-persistent model
-      .map { return $0.map { Post(persistentModel: $0) } }
+      .map(map(Post.init)) // (Observables of collections are a little clunky)
       .take(1)
       .asSingle()
   }
@@ -29,7 +29,7 @@ class RealmPersistenceManager {
     
     return Observable.array(from: users)
       // Map to non-persistent model
-      .map { return $0.map { User(persistentModel: $0) } }
+      .map(map(User.init))
       .take(1)
       .asSingle()
   }
@@ -43,7 +43,7 @@ class RealmPersistenceManager {
     
     return Observable.array(from: users)
       // Map to non-persistent model
-      .map { return $0.map { Comment(persistentModel: $0) } }
+      .map(map(Comment.init))
       .take(1)
       .asSingle()
   }

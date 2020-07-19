@@ -77,7 +77,7 @@ class PostDetailVC: UIViewController {
 
     viewModel.alertStream
       .compactMap(identity)
-      .flatMap(self.alert(contents:))
+      .flatMap(alert(contents:))
       .subscribe()
       .disposed(by: disposeBag)
   }
