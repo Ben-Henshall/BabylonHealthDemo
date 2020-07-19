@@ -105,7 +105,7 @@ class PostsVC: UIViewController {
     postsTableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.reuseIdentifier)
     view.addSubview(postsTableView)
     
-    activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     activityIndicator.startAnimating()
     view.addSubview(activityIndicator)
     

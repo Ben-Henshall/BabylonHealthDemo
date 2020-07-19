@@ -91,14 +91,14 @@ class PostDetailVC: UIViewController {
     tableView.register(DetailedTitleTableViewCell.self, forCellReuseIdentifier: DetailedTitleTableViewCell.reuseIdentifier)
     view.addSubview(tableView)
     
-    activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     activityIndicator.startAnimating()
     view.addSubview(activityIndicator)
   }
   
   private func setupStyling() {
     tableView.separatorStyle = .none
-    tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.rowHeight = UITableView.automaticDimension
     tableView.allowsSelection = false
     
     view.backgroundColor = .white

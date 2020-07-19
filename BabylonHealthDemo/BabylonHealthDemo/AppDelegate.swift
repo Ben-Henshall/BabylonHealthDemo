@@ -9,7 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   var dataManager: DataManager!
   
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
     setup()
     setupDataAccessor()
@@ -41,8 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   private func setupLogging() {
-    DDLog.add(DDTTYLogger.sharedInstance) // TTY = Xcode console
-    DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
+    DDLog.add(DDOSLogger.sharedInstance) // ASL = Apple System Logs
 
     let fileLogger: DDFileLogger = DDFileLogger() // File Logger
     fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours

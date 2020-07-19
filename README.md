@@ -9,6 +9,9 @@
 
 This project uses Carthage to install dependencies. Rather than using the traditional "Carthage update" method, it uses the lightweight method of `--no-build`.
 
+To pull the currently used versions of the library, use:
+`carthage checkout`
+
 To update the dependencies, use:
 `carthage update --use-submodules --no-build`
 
@@ -48,3 +51,6 @@ I have also included basic mock implementations for DataManager and NavigationHa
 
 ## TODOs
 All TODO comments left in the code were due to time constraints.
+
+- Add integration test scheme
+
