@@ -36,9 +36,9 @@ class PostDetailVM {
   
   private func setupObservables() {
     alertStream = PublishSubject<AlertContents?>()
-    title = Driver.just(NSLocalizedString("post_detail_screen_title", comment: "Post Detail"))
+    title = Driver.just(Localization.PostDetail.title)
     
-    authorCellTitle = Driver.just(NSLocalizedString("post_detail_screen_author", comment: "Author"))
+    authorCellTitle = Driver.just(Localization.PostDetail.author)
 
     author = post
       // Only take the first post, as the userID won't change and taking 1 will prevent making
@@ -50,13 +50,13 @@ class PostDetailVM {
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
+        self?.alertStream.onNext(AlertContents(error: error))
       })
       .filter(\.isEmpty.isFalse)
       .compactMap(\.first?.username)
       .asDriver(onErrorJustReturn: "")
     
-    bodyCellTitle = Driver.just(NSLocalizedString("post_detail_screen_body", comment: "Body"))
+    bodyCellTitle = Driver.just(Localization.PostDetail.body)
     body = post
       .map(\.body)
       .asDriver(onErrorJustReturn: "")
@@ -71,11 +71,11 @@ class PostDetailVM {
       }
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
+        self?.alertStream.onNext(AlertContents(error: error))
       })
       .asDriver(onErrorJustReturn: [])
     
-    numberOfCommentsCellTitle = Driver.just(NSLocalizedString("post_detail_screen_num_of_comments", comment: "Number of comments"))
+    numberOfCommentsCellTitle = Driver.just(Localization.PostDetail.numberOfComments)
     numberOfComments = comments
       .map(\.count)
     
@@ -83,7 +83,7 @@ class PostDetailVM {
     self.post
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
-        self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
+        self?.alertStream.onNext(AlertContents(error: error))
       })
       .subscribe()
       .disposed(by: disposeBag)

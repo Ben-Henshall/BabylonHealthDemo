@@ -13,3 +13,14 @@ extension AlertContents: Equatable {
       lhs.actionTitle == rhs.actionTitle
   }
 }
+
+extension AlertContents {
+  init(error: Error) {
+    self.init(
+      title: Localization.Error.genericTitle,
+      text: error.localizedDescription,
+      actionTitle: Localization.Error.ok,
+      action: nil
+    )
+  }
+}
