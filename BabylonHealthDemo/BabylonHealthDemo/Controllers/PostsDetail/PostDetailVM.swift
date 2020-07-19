@@ -52,7 +52,7 @@ class PostDetailVM {
         // TODO: Implement user-friendly error codes
         self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
-      .filter(\.isEmpty)
+      .filter(\.isEmpty.isFalse)
       .compactMap(\.first?.username)
       .asDriver(onErrorJustReturn: "")
     

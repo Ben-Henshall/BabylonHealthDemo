@@ -58,6 +58,8 @@
 		13970EF120FD369700C748DC /* PostDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF020FD369700C748DC /* PostDetailVC.swift */; };
 		13970EF320FD36A000C748DC /* PostDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13970EF220FD36A000C748DC /* PostDetailVM.swift */; };
 		13AABF0824C4A0FC00B48311 /* RxSwift+IgnoringNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AABF0724C4A0FC00B48311 /* RxSwift+IgnoringNil.swift */; };
+		13AABF0B24C4A46900B48311 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AABF0A24C4A46900B48311 /* Functional.swift */; };
+		13AABF0D24C4A5A200B48311 /* Bool+isFalse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AABF0C24C4A5A200B48311 /* Bool+isFalse.swift */; };
 		13EE153520FE4733008CE979 /* Scene+ViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */; };
 		13EE153820FE47D0008CE979 /* MockNavigationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */; };
 		13EE153B20FE4ADA008CE979 /* ActualViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */; };
@@ -145,6 +147,8 @@
 		13970EF020FD369700C748DC /* PostDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailVC.swift; sourceTree = "<group>"; };
 		13970EF220FD36A000C748DC /* PostDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailVM.swift; sourceTree = "<group>"; };
 		13AABF0724C4A0FC00B48311 /* RxSwift+IgnoringNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxSwift+IgnoringNil.swift"; sourceTree = "<group>"; };
+		13AABF0A24C4A46900B48311 /* Functional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functional.swift; sourceTree = "<group>"; };
+		13AABF0C24C4A5A200B48311 /* Bool+isFalse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+isFalse.swift"; sourceTree = "<group>"; };
 		13EE153420FE4733008CE979 /* Scene+ViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+ViewControllerTests.swift"; sourceTree = "<group>"; };
 		13EE153720FE47D0008CE979 /* MockNavigationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNavigationHandler.swift; sourceTree = "<group>"; };
 		13EE153A20FE4ADA008CE979 /* ActualViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualViewControllerTests.swift; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 				13970EEB20FD2C6500C748DC /* Extensions */,
 				133CBA9D20FF9CDD00A5F2FE /* UIElements */,
 				13970EE220FD0EF000C748DC /* Controllers */,
+				13AABF0924C4A45900B48311 /* Utilities */,
 				1308B46721052F2D00C6C5FF /* Resources */,
 			);
 			path = BabylonHealthDemo;
@@ -330,6 +335,7 @@
 				132BFDC12103D504003D327E /* UIColor+Styles.swift */,
 				132BFDC32103DA92003D327E /* UIFont+Styles.swift */,
 				13AABF0724C4A0FC00B48311 /* RxSwift+IgnoringNil.swift */,
+				13AABF0C24C4A5A200B48311 /* Bool+isFalse.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -350,6 +356,14 @@
 				13970EF220FD36A000C748DC /* PostDetailVM.swift */,
 			);
 			path = PostsDetail;
+			sourceTree = "<group>";
+		};
+		13AABF0924C4A45900B48311 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				13AABF0A24C4A46900B48311 /* Functional.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		13EE153320FE471F008CE979 /* Navigation */ = {
@@ -534,6 +548,7 @@
 				1324ECDB20FCF5F000D251E6 /* AppDelegate.swift in Sources */,
 				133CBA9A20FF80DC00A5F2FE /* Comment.swift in Sources */,
 				13AABF0824C4A0FC00B48311 /* RxSwift+IgnoringNil.swift in Sources */,
+				13AABF0D24C4A5A200B48311 /* Bool+isFalse.swift in Sources */,
 				13970EE820FD143D00C748DC /* Scene+ViewController.swift in Sources */,
 				133CBAA12102293600A5F2FE /* DataManager.swift in Sources */,
 				133CBAA32102373D00A5F2FE /* RealmPersistenceManager.swift in Sources */,
@@ -542,6 +557,7 @@
 				13970EE120FD0EA100C748DC /* Scene.swift in Sources */,
 				132AEE0B21053ADB000DE6FA /* NetworkService.swift in Sources */,
 				133CBA9F20FF9CF900A5F2FE /* TitleTableViewCell.swift in Sources */,
+				13AABF0B24C4A46900B48311 /* Functional.swift in Sources */,
 				13970EDC20FD08C900C748DC /* SceneCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -34,13 +34,13 @@ class PostDetailVC: UIViewController {
   
   func bindViewModel() {
     let authorCell = viewModel.author
-      .filter { !$0.isEmpty }
+      .filter(\.isEmpty.isFalse)
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
     
     let bodyCell = viewModel.body
-      .filter { !$0.isEmpty }
+      .filter(\.isEmpty.isFalse)
       .withLatestFrom(viewModel.bodyCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: false)
       }
@@ -65,23 +65,19 @@ class PostDetailVC: UIViewController {
     
     let hasLoaded = latest
       .map { $0.count == cells.count }
-      .filter { $0 }
     
     hasLoaded
       .drive(activityIndicator.rx.isHidden)
       .disposed(by: disposeBag)
     
     hasLoaded
-      .map { !$0 }
+      .map(\.isFalse)
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
 
     viewModel.alertStream
-      .filter { $0 != nil }
-      .flatMap { [weak self] contents -> Completable in
-        guard let strongSelf = self, let contents = contents else { return Completable.empty() }
-        return strongSelf.alert(contents: contents)
-      }
+      .compactMap(identity)
+      .flatMap(self.alert(contents:))
       .subscribe()
       .disposed(by: disposeBag)
   }

@@ -57,3 +57,4 @@ All TODO comments left in the code were due to time constraints.
 - Add `identity` function
 - Add better Localization process
 - Add `isFalse` for better functional behaviour
+- Fix alt background

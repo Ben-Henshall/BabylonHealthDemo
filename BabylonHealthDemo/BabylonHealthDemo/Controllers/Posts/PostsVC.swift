@@ -81,15 +81,14 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     let hasLoaded = viewModel.posts
-      .map(\.isEmpty)
-      .filter { $0 }
+      .map(\.isEmpty.isFalse)
     
     hasLoaded
       .drive(activityIndicator.rx.isHidden)
       .disposed(by: disposeBag)
     
     hasLoaded
-      .map { !$0 }
+      .map(\.isFalse)
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
