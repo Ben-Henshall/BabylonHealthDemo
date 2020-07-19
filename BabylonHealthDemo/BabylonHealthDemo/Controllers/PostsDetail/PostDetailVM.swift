@@ -41,6 +41,7 @@ class PostDetailVM {
     authorCellTitle = Driver.just(Localization.PostDetail.author)
 
     author = post
+      .observeOn(MainScheduler.asyncInstance)
       // Only take the first post, as the userID won't change and taking 1 will prevent making
       // multiple network requests
       .take(1)
@@ -62,6 +63,7 @@ class PostDetailVM {
       .asDriver(onErrorJustReturn: "")
     
     comments = post
+      .observeOn(MainScheduler.asyncInstance)
       // Only take the first post, as the userID won't change and taking 1 will prevent making
       // multiple network requests
       .take(1)
@@ -81,6 +83,7 @@ class PostDetailVM {
     
     // Subscription to kick off networking
     self.post
+      .observeOn(MainScheduler.asyncInstance)
       .do(onError: { [weak self] error in
         // TODO: Implement user-friendly error codes
         self?.alertStream.onNext(AlertContents(error: error))

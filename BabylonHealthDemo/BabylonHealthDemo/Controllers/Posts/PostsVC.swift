@@ -69,6 +69,7 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     viewModel.alertStream
+      .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
       .flatMap { [weak self] contents -> Completable in
         guard let strongSelf = self, let contents = contents else { return Completable.empty() }
         return strongSelf.alert(contents: contents)

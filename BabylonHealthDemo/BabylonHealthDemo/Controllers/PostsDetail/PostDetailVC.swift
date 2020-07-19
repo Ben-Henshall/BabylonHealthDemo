@@ -76,6 +76,7 @@ class PostDetailVC: UIViewController {
       .disposed(by: disposeBag)
 
     viewModel.alertStream
+      .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
       .compactMap(identity)
       .flatMap(alert(contents:))
       .subscribe()
