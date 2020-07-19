@@ -93,7 +93,7 @@ extension RealmPersistenceManager: PersistenceManager {
     try? realm.write {
       persistentModels.forEach { persistentModel in
         // Get persistent type of class and initialise
-        realm.add(persistentModel.persistentModel, update: true)
+        realm.add(persistentModel.persistentModel, update: .all)
       }
     }
   }
