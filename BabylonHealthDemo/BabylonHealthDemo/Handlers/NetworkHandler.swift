@@ -3,7 +3,13 @@ import RealmSwift
 import RxSwift
 import RxRealm
 
-class APIService {
+public class APIService {
+  
+  private let urlSession: URLSession
+  
+  public init(urlSession: URLSession = .shared) {
+    self.urlSession = urlSession
+  }
   
   fileprivate enum Endpoint: String {
     case posts
@@ -29,18 +35,17 @@ class APIService {
   // TODO: Add retry mechanism using timer to retry every x seconds up to Y number of times
   private func request<Model: Decodable>(endpoint: Endpoint, parameters: [Parameters: String] = [:]) -> Single<Model> {
     return Observable.just(endpoint)
-      .map { $0.url }
-      .map { url -> URLComponents in
+      .map(\.url)
+      .map { url -> URL in
         var comps = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         comps.queryItems = parameters.map { URLQueryItem(name: $0.key.rawValue, value: $0.value) }
-        return comps
+        return comps.url!
       }
-      .map { $0.url! }
-      .map { URLRequest(url: $0) }
-      .flatMap { URLSession.shared.rx.response(request: $0) }
+      .map { URLRequest.init(url: $0) }
+      .flatMap(urlSession.rx.response(request:))
       // TODO: check response for error
       .map { _, data in
-        return try JSONDecoder().decode(Model.self, from: data)
+        try JSONDecoder().decode(Model.self, from: data)
       }
       .take(1)
       .asSingle()

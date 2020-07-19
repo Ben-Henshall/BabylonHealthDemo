@@ -27,9 +27,11 @@ class PostsVMTests: XCTestCase {
     commentsSubject = PublishSubject<[Comment]>()
     
     navigationHandler = MockNavigationHandler()
-    dataManager = MockDataManager(posts: postsSubject.asObservable(),
-                                  users: usersSubject.asObservable(),
-                                  comments: commentsSubject.asObservable())
+    dataManager = MockDataManager(
+      posts: postsSubject.asObservable(),
+      users: usersSubject.asObservable(),
+      comments: commentsSubject.asObservable()
+    )
 
     vm = PostsVM(navigationHandler: navigationHandler, dataManager: dataManager)
   }
@@ -48,8 +50,10 @@ class PostsVMTests: XCTestCase {
   func testDoesPostsUpdate() {
     let firstExpected: [Post] = []
     let secondExpected = [Post(id: 1, userID: 1, title: "title1", body: "body1")]
-    let thirdExpected = [Post(id: 1, userID: 1, title: "title1", body: "body1"),
-                          Post(id: 2, userID: 2, title: "title2", body: "body2")]
+    let thirdExpected = [
+      Post(id: 1, userID: 1, title: "title1", body: "body1"),
+      Post(id: 2, userID: 2, title: "title2", body: "body2")
+    ]
     
     let postsEvents = scheduler.createObserver([Post].self)
     vm.posts
@@ -64,9 +68,11 @@ class PostsVMTests: XCTestCase {
     }
     scheduler.start()
     
-    let expected = [next(0, firstExpected),
-                    next(100, secondExpected),
-                    next(200, thirdExpected)]
+    let expected = [
+      Recorded.next(0, firstExpected),
+      Recorded.next(100, secondExpected),
+      Recorded.next(200, thirdExpected)
+    ]
 
     XCTAssertEqual(expected, postsEvents.events)
   }
@@ -83,8 +89,10 @@ class PostsVMTests: XCTestCase {
     }
     scheduler.start()
     
-    let expected = [next(0, (nil as AlertContents?)),
-                    next(100, (AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)) as AlertContents?)]
+    let expected = [
+      Recorded.next(0, (nil as AlertContents?)),
+      Recorded.next(100, (AlertContents(title: "Error", text: error.localizedDescription, actionTitle: "OK", action: nil)) as AlertContents?)
+    ]
     
     XCTAssertEqual(expected, alertEvents.events)
   }

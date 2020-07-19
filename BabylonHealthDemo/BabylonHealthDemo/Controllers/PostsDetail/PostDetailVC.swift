@@ -34,19 +34,19 @@ class PostDetailVC: UIViewController {
   
   func bindViewModel() {
     let authorCell = viewModel.author
-      .filter { !$0.isEmpty }
+      .filter(\.isEmpty.isFalse)
       .withLatestFrom(viewModel.authorCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
     
     let bodyCell = viewModel.body
-      .filter { !$0.isEmpty }
+      .filter(\.isEmpty.isFalse)
       .withLatestFrom(viewModel.bodyCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: false)
       }
-    
+
     let numberOfCommentsCell = viewModel.numberOfComments
-      .map { "\($0)" }
+      .map(String.init)
       .withLatestFrom(viewModel.numberOfCommentsCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
@@ -64,24 +64,21 @@ class PostDetailVC: UIViewController {
       .disposed(by: disposeBag)
     
     let hasLoaded = latest
-      .map { $0.count == cells.count}
-      .filter { $0 }
+      .map { $0.count == cells.count }
     
     hasLoaded
       .drive(activityIndicator.rx.isHidden)
       .disposed(by: disposeBag)
     
     hasLoaded
-      .map { !$0 }
+      .map(\.isFalse)
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
-    
+
     viewModel.alertStream
-      .filter { $0 != nil }
-      .flatMap { [weak self] contents -> Completable in
-        guard let strongSelf = self, let contents = contents else { return Completable.empty() }
-        return strongSelf.alert(contents: contents)
-      }
+      .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+      .compactMap(identity)
+      .flatMap(alert(contents:))
       .subscribe()
       .disposed(by: disposeBag)
   }

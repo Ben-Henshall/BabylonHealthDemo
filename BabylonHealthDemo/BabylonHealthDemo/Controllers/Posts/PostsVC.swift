@@ -2,7 +2,7 @@ import UIKit
 import CocoaLumberjackSwift
 import RxSwift
 
-private let TableViewRefreshTimer: RxTimeInterval = 0.2
+private let TableViewRefreshTimer: RxTimeInterval = .milliseconds(200)
 
 class PostsVC: UIViewController {
   private let disposeBag = DisposeBag()
@@ -61,7 +61,7 @@ class PostsVC: UIViewController {
         strongSelf.refreshControl.endRefreshing()
       })
       .drive(postsTableView.rx.items) { _, row, post in
-        let useAltBackground = row % 2 == 0
+        let useAltBackground = row.isMultiple(of: 2)
         let cell = TitleTableViewCell()
         cell.configure(model: TitleTableViewCellModel(post: post, useAltBackground: useAltBackground))
         return cell
@@ -69,7 +69,7 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     viewModel.alertStream
-      .filter { $0 != nil }
+      .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
       .flatMap { [weak self] contents -> Completable in
         guard let strongSelf = self, let contents = contents else { return Completable.empty() }
         return strongSelf.alert(contents: contents)
@@ -82,15 +82,14 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     let hasLoaded = viewModel.posts
-      .map { !$0.isEmpty }
-      .filter { $0 }
+      .map(\.isEmpty.isFalse)
     
     hasLoaded
       .drive(activityIndicator.rx.isHidden)
       .disposed(by: disposeBag)
     
     hasLoaded
-      .map { !$0 }
+      .map(\.isFalse)
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
     

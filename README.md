@@ -51,6 +51,3 @@ I have also included basic mock implementations for DataManager and NavigationHa
 
 ## TODOs
 All TODO comments left in the code were due to time constraints.
-
-- Add integration test scheme
-
