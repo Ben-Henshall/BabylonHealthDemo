@@ -2,7 +2,7 @@ import UIKit
 import CocoaLumberjackSwift
 import RxSwift
 
-private let TableViewRefreshTimer: RxTimeInterval = 0.2
+private let TableViewRefreshTimer: RxTimeInterval = .milliseconds(200)
 
 class PostsVC: UIViewController {
   private let disposeBag = DisposeBag()

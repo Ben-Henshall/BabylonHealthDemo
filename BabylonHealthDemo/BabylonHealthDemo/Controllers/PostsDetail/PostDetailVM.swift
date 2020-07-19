@@ -24,7 +24,7 @@ class PostDetailVM {
     self.dataManager = dataManager
     
     self.post = dataManager.post(id: post.id)
-      .map { $0.first }
+      .compactMap(\.first)
       .share(replay: 1, scope: .whileConnected)
     
     setup()
@@ -53,12 +53,12 @@ class PostDetailVM {
         self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
       .filter(\.isEmpty)
-      .map { $0.first?.username ?? "" }
+      .compactMap(\.first?.username)
       .asDriver(onErrorJustReturn: "")
     
     bodyCellTitle = Driver.just(NSLocalizedString("post_detail_screen_body", comment: "Body"))
     body = post
-      .map { $0.body }
+      .map(\.body)
       .asDriver(onErrorJustReturn: "")
     
     comments = post
@@ -77,7 +77,7 @@ class PostDetailVM {
     
     numberOfCommentsCellTitle = Driver.just(NSLocalizedString("post_detail_screen_num_of_comments", comment: "Number of comments"))
     numberOfComments = comments
-      .map { $0.count }
+      .map(\.count)
     
     // Subscription to kick off networking
     self.post
