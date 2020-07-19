@@ -9,6 +9,9 @@
 
 This project uses Carthage to install dependencies. Rather than using the traditional "Carthage update" method, it uses the lightweight method of `--no-build`.
 
+To pull the currently used versions of the library, use:
+`carthage checkout`
+
 To update the dependencies, use:
 `carthage update --use-submodules --no-build`
 
