@@ -24,7 +24,7 @@ class PostDetailVM {
     self.dataManager = dataManager
     
     self.post = dataManager.post(id: post.id)
-      .map { $0.first! }
+      .map { $0.first }
       .share(replay: 1, scope: .whileConnected)
     
     setup()
@@ -52,9 +52,8 @@ class PostDetailVM {
         // TODO: Implement user-friendly error codes
         self?.alertStream.onNext(AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil))
       })
-      .filter { !$0.isEmpty }
-      .map { $0.first! }
-      .map { $0.username }
+      .filter(\.isEmpty)
+      .map { $0.first?.username ?? "" }
       .asDriver(onErrorJustReturn: "")
     
     bodyCellTitle = Driver.just(NSLocalizedString("post_detail_screen_body", comment: "Body"))

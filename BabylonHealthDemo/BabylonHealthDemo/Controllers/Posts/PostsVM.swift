@@ -57,9 +57,7 @@ class PostsVM {
         let alert = AlertContents(title: NSLocalizedString("alert_error", comment: "Error"), text: error.localizedDescription, actionTitle: NSLocalizedString("alert_ok", comment: "OK"), action: nil)
         self?.alertStream.onNext(alert)
       })
-      .subscribe(onNext: { [weak self] in
-        self?.postsTimeline.onNext($0)
-      })
+      .subscribe(onNext: postsTimeline.onNext)
       .disposed(by: disposeBag)
     
     pullNewData.onNext(())

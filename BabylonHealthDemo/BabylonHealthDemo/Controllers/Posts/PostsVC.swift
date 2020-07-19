@@ -61,7 +61,7 @@ class PostsVC: UIViewController {
         strongSelf.refreshControl.endRefreshing()
       })
       .drive(postsTableView.rx.items) { _, row, post in
-        let useAltBackground = row % 2 == 0
+        let useAltBackground = row.isMultiple(of: 2)
         let cell = TitleTableViewCell()
         cell.configure(model: TitleTableViewCellModel(post: post, useAltBackground: useAltBackground))
         return cell
@@ -69,7 +69,6 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     viewModel.alertStream
-      .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in
         guard let strongSelf = self, let contents = contents else { return Completable.empty() }
         return strongSelf.alert(contents: contents)
@@ -82,7 +81,7 @@ class PostsVC: UIViewController {
       .disposed(by: disposeBag)
     
     let hasLoaded = viewModel.posts
-      .map { !$0.isEmpty }
+      .map(\.isEmpty)
       .filter { $0 }
     
     hasLoaded

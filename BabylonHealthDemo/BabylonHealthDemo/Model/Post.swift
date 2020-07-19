@@ -33,11 +33,7 @@ struct Post: InternalModel {
   }
 }
 
-extension Post: Equatable {
-  public static func == (lhs: Post, rhs: Post) -> Bool {
-    return lhs.id == rhs.id
-  }
-}
+extension Post: Equatable { }
 
 /// Persistence model used to store in Realm
 @objcMembers class PostPersistence: Object {

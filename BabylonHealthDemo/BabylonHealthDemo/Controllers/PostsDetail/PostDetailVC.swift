@@ -44,9 +44,9 @@ class PostDetailVC: UIViewController {
       .withLatestFrom(viewModel.bodyCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: false)
       }
-    
+
     let numberOfCommentsCell = viewModel.numberOfComments
-      .map { "\($0)" }
+      .map(String.init)
       .withLatestFrom(viewModel.numberOfCommentsCellTitle) { detail, cellTitle in
         return DetailedTableViewCellModel(title: cellTitle, detail: detail, useLargeDetail: true)
       }
@@ -64,7 +64,7 @@ class PostDetailVC: UIViewController {
       .disposed(by: disposeBag)
     
     let hasLoaded = latest
-      .map { $0.count == cells.count}
+      .map { $0.count == cells.count }
       .filter { $0 }
     
     hasLoaded
@@ -75,7 +75,7 @@ class PostDetailVC: UIViewController {
       .map { !$0 }
       .drive(activityIndicator.rx.isAnimating)
       .disposed(by: disposeBag)
-    
+
     viewModel.alertStream
       .filter { $0 != nil }
       .flatMap { [weak self] contents -> Completable in

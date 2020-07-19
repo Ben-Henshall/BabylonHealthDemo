@@ -53,4 +53,7 @@ I have also included basic mock implementations for DataManager and NavigationHa
 All TODO comments left in the code were due to time constraints.
 
 - Add integration test scheme
-
+- Add `map` function for mapping Observable<Collection>
+- Add `identity` function
+- Add better Localization process
+- Add `isFalse` for better functional behaviour
