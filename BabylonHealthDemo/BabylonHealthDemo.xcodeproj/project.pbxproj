@@ -423,9 +423,11 @@
 				TargetAttributes = {
 					1324ECD620FCF5F000D251E6 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1150;
 					};
 					1324ECEA20FCF5F200D251E6 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1150;
 						TestTargetID = 1324ECD620FCF5F000D251E6;
 					};
 				};
@@ -698,7 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bhenshall.BabylonHealthDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -716,7 +718,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bhenshall.BabylonHealthDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -736,7 +738,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bhenshall.BabylonHealthDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BabylonHealthDemo.app/BabylonHealthDemo";
 			};
@@ -757,7 +759,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = bhenshall.BabylonHealthDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BabylonHealthDemo.app/BabylonHealthDemo";
 			};

@@ -7,7 +7,7 @@ extension UIViewController {
   /// - Returns: Whether the ViewController is being presented modally
   func isModal() -> Bool {
     // Check if VC is the root view controller
-    if let index = navigationController?.viewControllers.index(of: self), index > 0 {
+    if let index = navigationController?.viewControllers.firstIndex(of: self), index > 0 {
       return false
     } else if self.presentingViewController != nil {
       return true
